@@ -1,0 +1,3280 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiet Zone · مولّد رموز QR</title>
+<meta name="description" content="سوّ رموز QR بتصميمك للروابط والواي فاي وجهات الاتصال والإيميل والاتصال والرسائل. مجاني وخاص ويشتغل كامل في متصفحك.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath fill='%23fff' d='M7 7h8v8H7zm2 2v4h4V9zm8-2h8v8h-8zm2 2v4h4V9zM7 17h8v8H7zm2 2v4h4v-4zm8-2h3v3h-3zm5 0h3v3h-3zm-5 5h3v3h-3zm5 0h3v3h-3z'/%3E%3C/svg%3E">
+
+<style>
+/* =========================================================
+   1. Design tokens (colors, radii, shadows)
+   Light mode is the default; dark mode overrides below.
+   ========================================================= */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f1f3f6;
+  --surface-3: #e8ebf0;
+  --border: #e2e5ea;
+  --border-strong: #c9ced6;
+  --text: #0f172a;
+  --text-2: #475569;
+  --text-3: #5f6b7d;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-soft: #eef0ff;
+  --on-accent: #ffffff;
+  --danger: #b42318;
+  --danger-soft: #fef1f0;
+  --warn: #8a4b00;
+  --warn-soft: #fff5e1;
+  --ok: #157f3c;
+  --ok-soft: #eaf7ef;
+  --ring: rgba(79, 70, 229, 0.38);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -8px rgba(15, 23, 42, 0.12);
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+  --font: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Tahoma, "Noto Sans Arabic", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0d12;
+    --surface: #13161d;
+    --surface-2: #1a1e27;
+    --surface-3: #232834;
+    --border: #262b36;
+    --border-strong: #3a4150;
+    --text: #e9ecf2;
+    --text-2: #aab2c0;
+    --text-3: #9099aa;
+    --accent: #8f91ff;
+    --accent-hover: #a9abff;
+    --accent-soft: #1e2042;
+    --on-accent: #0b0d12;
+    --danger: #ff8f84;
+    --danger-soft: #2b1715;
+    --warn: #f5b850;
+    --warn-soft: #2a2110;
+    --ok: #5fd38a;
+    --ok-soft: #10251a;
+    --ring: rgba(143, 145, 255, 0.45);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* =========================================================
+   2. Base styles
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, p { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+svg { flex-shrink: 0; }
+[hidden] { display: none !important; }
+
+/* Visible keyboard focus everywhere, but not on mouse click */
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Headings and cards only get focus so screen readers announce a page change; no ring needed */
+[tabindex="-1"]:focus, [tabindex="-1"]:focus-visible { outline: none; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; inset-inline-start: 16px; top: -48px; z-index: 100;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  background: var(--accent); color: var(--on-accent);
+  font-weight: 600; text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+
+/* =========================================================
+   3. Header and page layout
+   ========================================================= */
+.topbar {
+  max-width: 1180px; margin: 0 auto;
+  padding: 20px 16px 4px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand-mark {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: grid; place-items: center;
+  background: var(--accent); color: var(--on-accent);
+  box-shadow: var(--shadow-sm);
+}
+.brand h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+.brand p { font-size: 13px; color: var(--text-3); line-height: 1.3; }
+.privacy-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 11px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-2); font-size: 12.5px; font-weight: 500; white-space: nowrap;
+}
+.privacy-pill svg { color: var(--ok); }
+
+.layout {
+  max-width: 1180px; margin: 0 auto;
+  padding: 16px 16px 40px;
+  display: grid; gap: 16px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "content" "preview" "design";
+}
+.content-card { grid-area: content; }
+.design-card { grid-area: design; }
+.preview-col { grid-area: preview; }
+
+@media (min-width: 920px) {
+  .topbar { padding: 28px 24px 4px; }
+  .layout {
+    padding: 20px 24px 56px; gap: 20px;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    grid-template-areas: "content preview" "design preview";
+    align-items: start;
+  }
+  .preview-col { position: sticky; top: 20px; }
+}
+@media (min-width: 1100px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 420px; }
+}
+
+/* =========================================================
+   4. Cards and section headings
+   ========================================================= */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+  min-width: 0;
+}
+@media (max-width: 480px) { .card { padding: 16px; } }
+
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.card-head h2 { font-size: 15px; font-weight: 650; letter-spacing: -0.005em; }
+
+.section + .section { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--border); }
+.section-title { font-size: 13px; font-weight: 650; color: var(--text); margin-bottom: 12px; }
+
+/* =========================================================
+   5. Content-type tabs
+   ========================================================= */
+.tabs {
+  display: grid; gap: 4px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 4px; margin-bottom: 20px;
+  background: var(--surface-2); border-radius: 12px;
+}
+@media (max-width: 640px) { .tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.tab {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  min-height: 56px; padding: 8px 4px;
+  border: 0; border-radius: 9px; background: transparent;
+  color: var(--text-2); font-size: 12.5px; font-weight: 550; line-height: 1.2;
+  cursor: pointer; transition: background-color .15s, color .15s, box-shadow .15s;
+}
+.tab:hover { color: var(--text); background: var(--surface-3); }
+.tab[aria-selected="true"] { background: var(--surface); color: var(--accent); box-shadow: var(--shadow-sm); }
+.tab:focus-visible { outline-offset: -2px; }
+
+/* =========================================================
+   6. Form fields
+   ========================================================= */
+.panel { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field-row { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 400px) { .field-row.stack-sm { grid-template-columns: minmax(0, 1fr); } }
+
+label, .label, legend { font-size: 13.5px; font-weight: 600; color: var(--text); }
+.optional { font-weight: 450; color: var(--text-3); }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend { padding: 0; margin-bottom: 6px; }
+
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  font-size: 16px; /* 16px stops iOS from zooming in on focus */
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  transition: border-color .15s, box-shadow .15s;
+  -webkit-appearance: none; appearance: none;
+}
+.input::placeholder { color: var(--text-3); opacity: .8; }
+.input:hover { border-color: var(--text-3); }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+.input[aria-invalid="true"] { border-color: var(--danger); }
+.input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 30%, transparent); }
+textarea.input { min-height: 112px; resize: vertical; line-height: 1.6; }
+/* Links, emails and numbers are typed left-to-right, but stay right-aligned to match the Arabic form */
+.input[dir="ltr"] { text-align: right; }
+.input[dir="ltr"]::placeholder { text-align: right; }
+
+.field-msg { font-size: 12.5px; color: var(--text-3); line-height: 1.4; }
+.field-msg.is-info { color: var(--text-2); overflow-wrap: anywhere; }
+.field-msg.is-warn { color: var(--warn); }
+.field-msg.is-error { color: var(--danger); font-weight: 500; }
+.field-msg.is-warn::before, .field-msg.is-error::before { content: "● "; font-size: 9px; vertical-align: 2px; }
+
+/* Input with a trailing button (password show/hide) */
+.input-wrap { position: relative; }
+.input-wrap .input { padding-inline-end: 48px; }
+.icon-btn {
+  display: inline-grid; place-items: center;
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  border: 0; background: transparent; color: var(--text-2); cursor: pointer;
+}
+.icon-btn:hover { background: var(--surface-2); color: var(--text); }
+.input-wrap .icon-btn { position: absolute; inset-inline-end: 4px; top: 50%; transform: translateY(-50%); }
+
+/* Segmented control (built from radio buttons for native keyboard support) */
+.segmented { display: flex; gap: 3px; padding: 3px; background: var(--surface-2); border-radius: var(--radius-md); }
+.segmented label { flex: 1 1 0; min-width: 0; position: relative; }
+.segmented input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.segmented span {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 38px; padding: 6px 8px; border-radius: 8px;
+  font-size: 13px; font-weight: 550; color: var(--text-2); text-align: center; line-height: 1.2;
+  cursor: pointer; transition: background-color .15s, color .15s, box-shadow .15s;
+}
+.segmented span:hover { color: var(--text); }
+.segmented input:checked + span { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
+.segmented input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* Toggle switch (a styled checkbox) */
+.switch { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+.switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.switch-track {
+  position: relative; flex-shrink: 0; margin-top: 1px;
+  width: 40px; height: 24px; border-radius: 999px;
+  background: var(--border-strong); transition: background-color .2s;
+}
+.switch-track::after {
+  content: ""; position: absolute; top: 3px; inset-inline-start: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform .2s;
+}
+.switch input:checked + .switch-track { background: var(--accent); }
+.switch input:checked + .switch-track::after { transform: translateX(16px); }
+[dir="rtl"] .switch input:checked + .switch-track::after { transform: translateX(-16px); }
+.switch input:focus-visible + .switch-track { outline: 2px solid var(--accent); outline-offset: 2px; }
+.switch-text { display: grid; gap: 2px; }
+.switch-text strong { font-size: 13.5px; font-weight: 600; }
+.switch-text small { font-size: 12.5px; color: var(--text-3); font-weight: 400; }
+
+/* =========================================================
+   7. Design controls
+   ========================================================= */
+.color-grid { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; }
+.color-field {
+  display: flex; align-items: center; gap: 8px;
+  min-height: 44px; padding-block: 5px; padding-inline: 5px 10px;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  background: var(--surface); transition: border-color .15s, box-shadow .15s;
+}
+.color-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+.color-field input[type="color"] {
+  flex-shrink: 0; width: 34px; height: 32px; padding: 0;
+  border: 0; border-radius: 7px; background: none; cursor: pointer;
+}
+.color-field input[type="color"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.color-field input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.color-field input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(127,127,127,.35); border-radius: 7px; }
+.color-field input[type="color"]::-moz-color-swatch { border: 1px solid rgba(127,127,127,.35); border-radius: 7px; }
+.color-field .hex {
+  width: 100%; min-width: 0; border: 0; background: transparent;
+  font-family: var(--mono); font-size: 16px; text-transform: uppercase; padding: 4px 0; text-align: right;
+}
+.color-field .hex:focus { outline: none; }
+.swap-btn { margin-bottom: 4px; border: 1px solid var(--border); }
+
+.notice {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-top: 12px; padding: 10px 12px;
+  border-radius: var(--radius-md); font-size: 13px; line-height: 1.4;
+}
+.notice svg { margin-top: 1px; }
+.notice.is-ok { background: var(--ok-soft); color: var(--ok); }
+.notice.is-warn { background: var(--warn-soft); color: var(--warn); }
+.notice.is-error { background: var(--danger-soft); color: var(--danger); }
+.notice.is-info { background: var(--surface-2); color: var(--text-2); }
+
+.choice-group + .choice-group { margin-top: 16px; }
+.choice-grid { display: grid; gap: 8px; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); }
+.choice { position: relative; min-width: 0; }
+.choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.choice-body {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  height: 100%; min-height: 64px; padding: 10px 6px;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface); color: var(--text-2);
+  font-size: 12.5px; font-weight: 550; text-align: center; line-height: 1.25;
+  cursor: pointer; transition: border-color .15s, background-color .15s, color .15s;
+}
+.choice-body:hover { border-color: var(--border-strong); color: var(--text); }
+.choice input:checked + .choice-body { border-color: var(--accent); background: var(--accent-soft); color: var(--text); box-shadow: inset 0 0 0 1px var(--accent); }
+.choice input:checked + .choice-body svg { color: var(--accent); }
+.choice input:focus-visible + .choice-body { outline: 2px solid var(--accent); outline-offset: 2px; }
+.choice input:disabled + .choice-body { cursor: not-allowed; opacity: .55; }
+.choice input:disabled:checked + .choice-body { opacity: 1; }
+
+/* Error-correction cards: letter + short explanation */
+.ecc-grid { --cols: 2; }
+@media (min-width: 560px) and (max-width: 919px), (min-width: 1180px) { .ecc-grid { --cols: 4; } }
+.ecc-grid .choice-body { align-items: flex-start; text-align: start; padding: 10px 12px; gap: 2px; }
+.ecc-grid .ecc-letter { font-size: 15px; font-weight: 700; color: var(--text); }
+.ecc-grid .ecc-name { font-size: 12.5px; font-weight: 600; color: var(--text); }
+.ecc-grid .ecc-desc { font-size: 12px; font-weight: 450; color: var(--text-3); }
+
+/* Sliders */
+.range-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.range-head output { font-family: var(--mono); font-size: 13px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+input[type="range"] { width: 100%; margin: 6px 0 2px; height: 28px; accent-color: var(--accent); cursor: pointer; background: transparent; }
+.range-grid { display: grid; gap: 18px; }
+
+/* Logo upload */
+.dropzone {
+  position: relative;
+  border: 1.5px dashed var(--border-strong); border-radius: var(--radius-md);
+  background: var(--surface-2); transition: border-color .15s, background-color .15s;
+}
+.dropzone:hover, .dropzone.is-dragging { border-color: var(--accent); background: var(--accent-soft); }
+.dropzone:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+.dropzone input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.dropzone label {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer;
+}
+.dropzone .dz-icon {
+  width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center;
+  background: var(--surface); color: var(--accent); border: 1px solid var(--border);
+}
+.dropzone .dz-text { display: grid; gap: 1px; }
+.dropzone .dz-text small { font-size: 12.5px; font-weight: 400; color: var(--text-3); }
+
+.logo-row {
+  display: flex; align-items: center; gap: 12px; padding: 10px;
+  border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-2);
+}
+.logo-row img {
+  width: 44px; height: 44px; object-fit: contain; border-radius: 8px;
+  background: repeating-conic-gradient(#d9dde3 0% 25%, #ffffff 0% 50%) 50% / 10px 10px;
+  border: 1px solid var(--border);
+}
+.logo-meta { display: grid; min-width: 0; flex: 1; }
+.logo-meta strong { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.logo-meta small { font-size: 12.5px; color: var(--text-3); }
+
+/* =========================================================
+   8. Buttons
+   ========================================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 10px 16px;
+  border-radius: var(--radius-md); border: 1px solid var(--border-strong);
+  background: var(--surface); color: var(--text);
+  font-size: 14px; font-weight: 600; line-height: 1.2; white-space: nowrap;
+  cursor: pointer; transition: background-color .15s, border-color .15s, color .15s, transform .05s;
+}
+.btn:hover:not(:disabled) { background: var(--surface-2); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { cursor: not-allowed; opacity: .5; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--text-2); min-height: 36px; padding: 6px 10px; font-size: 13px; }
+.btn-ghost:hover:not(:disabled) { color: var(--text); background: var(--surface-2); }
+.btn small { font-weight: 500; opacity: .8; font-size: 12.5px; }
+
+/* =========================================================
+   9. Preview panel
+   ========================================================= */
+.preview-card { padding: 16px; }
+.preview-card .card-head { margin: 4px 4px 14px; }
+.size-chip {
+  font-family: var(--mono); font-size: 12px; color: var(--text-2);
+  padding: 3px 8px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border);
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: grid; place-items: center;
+  padding: clamp(16px, 6%, 28px);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--text) 9%, transparent) 1px, transparent 0) 0 0 / 14px 14px,
+    var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.stage img {
+  display: block; width: 100%; height: 100%; max-width: 340px; max-height: 340px;
+  object-fit: contain; border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(15,23,42,.08), 0 12px 32px -12px rgba(15,23,42,.35);
+  transition: opacity .2s;
+}
+.stage img.is-pixelated { image-rendering: pixelated; }
+.stage[data-state="ready"] .stage-msg { display: none; }
+.stage:not([data-state="ready"]) img { display: none; }
+
+.stage-msg { display: grid; justify-items: center; gap: 10px; max-width: 280px; text-align: center; }
+.stage-msg .msg-icon {
+  width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center;
+  background: var(--surface); border: 1px solid var(--border); color: var(--text-3);
+}
+.stage[data-state="overflow"] .msg-icon, .stage[data-state="error"] .msg-icon { color: var(--danger); background: var(--danger-soft); border-color: transparent; }
+.stage[data-state="invalid"] .msg-icon { color: var(--warn); background: var(--warn-soft); border-color: transparent; }
+.stage-msg strong { font-size: 15px; font-weight: 650; }
+.stage-msg p { font-size: 13px; color: var(--text-2); line-height: 1.45; }
+
+.meta { margin: 14px 4px 0; display: grid; gap: 8px; }
+.meta-line { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+.meta-line span:last-child { text-align: end; }
+.meter { height: 4px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.meter > span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent); transition: width .25s ease, background-color .2s; }
+.meter.is-high > span { background: var(--warn); }
+.meter.is-full > span { background: var(--danger); }
+
+.scan-check { display: flex; align-items: flex-start; gap: 6px; font-size: 12.5px; font-weight: 550; line-height: 1.4; }
+.scan-check svg { margin-top: 1px; }
+.scan-check.is-ok { color: var(--ok); }
+.scan-check.is-warn { color: var(--warn); }
+
+.actions { display: grid; gap: 8px; margin-top: 16px; }
+.actions-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.copy-note { margin-top: 10px; }
+.tip { margin: 14px 4px 2px; font-size: 12.5px; color: var(--text-3); display: flex; gap: 6px; align-items: flex-start; }
+
+/* =========================================================
+   10. Footer and toast
+   ========================================================= */
+.footer { max-width: 1180px; margin: 0 auto; padding: 0 24px 32px; text-align: center; font-size: 12.5px; color: var(--text-3); }
+
+.toast {
+  position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom));
+  transform: translate(-50%, 16px); opacity: 0; pointer-events: none;
+  display: flex; align-items: center; gap: 8px;
+  max-width: calc(100vw - 32px); padding: 10px 16px; border-radius: 999px;
+  background: var(--text); color: var(--bg);
+  font-size: 13.5px; font-weight: 550; box-shadow: 0 10px 30px -8px rgba(0,0,0,.4);
+  transition: opacity .2s, transform .2s; z-index: 50;
+}
+.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+/* =========================================================
+   11. Navigation
+   ========================================================= */
+.topbar-end { display: flex; align-items: center; gap: 10px; }
+.nav { display: flex; gap: 3px; padding: 3px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.nav a {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 36px; padding: 6px 12px; border-radius: 9px;
+  color: var(--text-2); text-decoration: none; font-size: 13.5px; font-weight: 600; white-space: nowrap;
+}
+.nav a:hover { color: var(--text); background: var(--surface-2); }
+.nav a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); }
+.nav .count {
+  min-width: 20px; padding: 0 6px; border-radius: 999px; line-height: 18px; text-align: center;
+  font-size: 11.5px; background: var(--surface-3); color: var(--text-2);
+}
+@media (max-width: 760px) { .privacy-pill { display: none; } }
+@media (max-width: 420px) {
+  .nav a { padding: 6px 9px; }
+  .nav a svg { display: none; }
+  .brand p { display: none; }
+}
+
+/* =========================================================
+   12. Profile pages
+   ========================================================= */
+.page { max-width: 1180px; margin: 0 auto; padding: 16px 16px 40px; display: grid; gap: 16px; align-content: start; }
+@media (min-width: 920px) { .page { padding: 20px 24px 56px; gap: 20px; } }
+.page-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.page-head h2 { font-size: 22px; font-weight: 700; }
+.page-head p { color: var(--text-3); font-size: 13.5px; margin-top: 2px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.search { position: relative; flex: 1 1 240px; }
+.search svg { position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+.search .input { padding-inline-start: 38px; }
+.search .input::-webkit-search-cancel-button { cursor: pointer; }
+
+.avatar {
+  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700; font-size: 18px; line-height: 1;
+}
+.avatar.lg { width: 60px; height: 60px; border-radius: 16px; font-size: 26px; }
+.badge {
+  display: inline-flex; align-items: center; padding: 1px 9px; border-radius: 999px;
+  font-size: 11.5px; font-weight: 600; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border);
+}
+
+.profile-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.profile-card {
+  display: flex; gap: 12px; align-items: center; min-width: 0;
+  padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--surface); box-shadow: var(--shadow-md);
+  color: inherit; text-decoration: none; transition: border-color .15s, box-shadow .15s;
+}
+.profile-card:hover { border-color: var(--accent); }
+.pc-body { display: grid; gap: 3px; min-width: 0; }
+.pc-name { font-weight: 650; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pc-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-3); }
+.pc-hit { font-size: 12px; color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.empty-state { display: grid; justify-items: center; gap: 10px; padding: 40px 20px; text-align: center; }
+.empty-state .msg-icon {
+  width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--text-3);
+}
+.empty-state strong { font-size: 16px; }
+.empty-state p { color: var(--text-2); font-size: 13.5px; max-width: 340px; }
+
+.back-link { display: inline-flex; align-items: center; gap: 6px; justify-self: start; color: var(--text-2); text-decoration: none; font-size: 13.5px; font-weight: 600; }
+.back-link:hover { color: var(--accent); }
+.profile-hero { display: grid; gap: 14px; }
+.hero-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+.hero-main { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.hero-titles { display: grid; gap: 4px; min-width: 0; }
+.hero-titles h2 { font-size: 21px; font-weight: 700; overflow-wrap: anywhere; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-info { display: flex; flex-wrap: wrap; gap: 8px 18px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 13.5px; color: var(--text-2); }
+.hero-info > span { display: inline-flex; align-items: center; gap: 6px; }
+.hero-info .pv-notes { flex-basis: 100%; white-space: pre-wrap; display: block; }
+
+.btn-danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 35%, var(--border)); }
+.btn-danger:hover:not(:disabled) { background: var(--danger-soft); }
+.btn-danger-solid { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn-danger-solid:hover:not(:disabled) { background: color-mix(in srgb, var(--danger) 85%, #000); }
+@media (prefers-color-scheme: dark) { .btn-danger-solid { color: #1a0d0c; } }
+
+.code-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.code-card {
+  display: grid; gap: 10px; align-content: start; min-width: 0; padding: 12px;
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--surface); box-shadow: var(--shadow-md);
+}
+.code-thumb { aspect-ratio: 1 / 1; display: grid; place-items: center; padding: 14px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); }
+.code-thumb img { width: 100%; height: 100%; object-fit: contain; border-radius: 4px; }
+.code-text { display: grid; gap: 4px; min-width: 0; }
+.code-name { font-size: 14.5px; font-weight: 650; overflow-wrap: anywhere; }
+.code-summary { font-size: 12.5px; color: var(--text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.code-actions { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; }
+.code-actions .btn { min-height: 38px; padding: 6px 10px; font-size: 13px; }
+.btn.icon-only { width: 38px; padding: 0; }
+
+/* Banner in the generator: which profile this code is for */
+.context-bar {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding: 8px 10px;
+  border-radius: var(--radius-md); background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); font-size: 13.5px;
+}
+.context-bar .avatar { width: 30px; height: 30px; border-radius: 8px; font-size: 14px; }
+.context-bar .txt { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.context-bar a { color: var(--accent); font-weight: 600; }
+.context-bar .btn { flex-shrink: 0; }
+
+/* =========================================================
+   13. Dialogs
+   ========================================================= */
+dialog {
+  width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 32px);
+  padding: 0; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--surface); color: var(--text);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, .45);
+}
+dialog::backdrop { background: rgba(10, 12, 18, .55); }
+.dialog-body { display: grid; gap: 16px; padding: 20px; }
+.dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dialog-head h2, .dialog-title { font-size: 17px; font-weight: 700; }
+.dialog-text { color: var(--text-2); font-size: 14px; line-height: 1.6; }
+.dialog-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.dialog-actions .btn { min-width: 96px; }
+select.input { -webkit-appearance: auto; appearance: auto; cursor: pointer; }
+.checkbox-row { display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 500; cursor: pointer; }
+.checkbox-row input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+.identify-hit { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-2); }
+.identify-hit + .identify-hit { margin-top: 8px; }
+.identify-hit img { width: 52px; height: 52px; border-radius: 6px; background: #fff; object-fit: contain; }
+.identify-hit .pc-body { flex: 1; }
+.identify-hit .btn { min-height: 38px; font-size: 13px; }
+.decoded { margin-top: 8px; padding: 10px 12px; border-radius: var(--radius-sm); background: var(--surface-2); font-family: var(--mono); font-size: 12.5px; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 160px; overflow: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+</head>
+
+<body>
+<a class="skip-link" href="#content-card">انتقل للمولّد</a>
+
+<!-- Reusable icon definitions (referenced below with <use>) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><path d="M12 20h.01"/></symbol>
+    <symbol id="i-contact" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 8h2"/><path d="M15 12h2"/><path d="M7 16a3 3 0 0 1 4 0"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-sms" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-vector" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c6.5 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3.5 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><path d="m2 2 20 20"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><path d="M15 15h2v2h-2zM19 19h2v2h-2zM15 19h.01M19 15h.01"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true"><svg width="20" height="20"><use href="#i-qr"/></svg></div>
+    <div>
+      <h1>Quiet Zone</h1>
+      <p>مولّد رموز QR</p>
+    </div>
+  </div>
+  <div class="topbar-end">
+    <nav class="nav" aria-label="الأقسام">
+      <a href="#/" id="nav-generator" aria-current="page"><svg width="16" height="16" aria-hidden="true"><use href="#i-qr"/></svg>المولّد</a>
+      <a href="#/profiles" id="nav-profiles"><svg width="16" height="16" aria-hidden="true"><use href="#i-folder"/></svg>الملفات <span class="count" id="nav-count">0</span></a>
+    </nav>
+    <span class="privacy-pill"><svg width="15" height="15" aria-hidden="true"><use href="#i-shield"/></svg>يشتغل في متصفحك</span>
+  </div>
+</header>
+
+<noscript>
+  <p class="notice is-error" style="max-width:1132px;margin:16px auto">المولّد يحتاج JavaScript عشان يسوي رموز QR. فعّله وحدّث الصفحة.</p>
+</noscript>
+
+<main class="layout" id="view-generator">
+
+  <!-- ========== CONTENT ========== -->
+  <section class="card content-card" id="content-card" aria-labelledby="content-heading" tabindex="-1">
+    <div class="card-head"><h2 id="content-heading">وش تبي الكود يسوي؟</h2></div>
+
+    <!-- Shows which profile this code belongs to (when editing or creating for a profile) -->
+    <div class="context-bar" id="context-bar" role="status" hidden>
+      <span class="avatar" id="ctx-avatar" aria-hidden="true"></span>
+      <span class="txt" id="ctx-text"></span>
+      <button class="btn btn-ghost" type="button" id="ctx-exit">إلغاء</button>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="نوع رمز QR">
+      <button class="tab" type="button" role="tab" id="tab-url" data-type="url" aria-controls="panel-url" aria-selected="true"><svg width="18" height="18" aria-hidden="true"><use href="#i-link"/></svg>رابط</button>
+      <button class="tab" type="button" role="tab" id="tab-text" data-type="text" aria-controls="panel-text" aria-selected="false" tabindex="-1"><svg width="18" height="18" aria-hidden="true"><use href="#i-text"/></svg>نص</button>
+      <button class="tab" type="button" role="tab" id="tab-wifi" data-type="wifi" aria-controls="panel-wifi" aria-selected="false" tabindex="-1"><svg width="18" height="18" aria-hidden="true"><use href="#i-wifi"/></svg>واي فاي</button>
+      <button class="tab" type="button" role="tab" id="tab-vcard" data-type="vcard" aria-controls="panel-vcard" aria-selected="false" tabindex="-1"><svg width="18" height="18" aria-hidden="true"><use href="#i-contact"/></svg>جهة اتصال</button>
+      <button class="tab" type="button" role="tab" id="tab-email" data-type="email" aria-controls="panel-email" aria-selected="false" tabindex="-1"><svg width="18" height="18" aria-hidden="true"><use href="#i-mail"/></svg>إيميل</button>
+      <button class="tab" type="button" role="tab" id="tab-phone" data-type="phone" aria-controls="panel-phone" aria-selected="false" tabindex="-1"><svg width="18" height="18" aria-hidden="true"><use href="#i-phone"/></svg>اتصال</button>
+      <button class="tab" type="button" role="tab" id="tab-sms" data-type="sms" aria-controls="panel-sms" aria-selected="false" tabindex="-1"><svg width="18" height="18" aria-hidden="true"><use href="#i-sms"/></svg>رسالة</button>
+    </div>
+
+    <!-- URL -->
+    <div class="panel" role="tabpanel" id="panel-url" aria-labelledby="tab-url">
+      <div class="field">
+        <label for="url-input">رابط الموقع</label>
+        <input class="input" id="url-input" type="url" dir="ltr" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="example.com/menu" aria-describedby="url-input-msg" data-persist>
+        <p class="field-msg" id="url-input-msg" data-hint="لو ما كتبت https:// بنضيفها لك."></p>
+      </div>
+    </div>
+
+    <!-- Plain text -->
+    <div class="panel" role="tabpanel" id="panel-text" aria-labelledby="tab-text" hidden>
+      <div class="field">
+        <label for="text-input">النص</label>
+        <textarea class="input" id="text-input" dir="auto" rows="5" placeholder="اكتب اللي تبيه — ملاحظة، كود، رسالة قصيرة…" aria-describedby="text-input-msg" data-persist></textarea>
+        <p class="field-msg" id="text-input-msg" data-hint="يطلع كنص عادي إذا أحد مسح الكود."></p>
+      </div>
+    </div>
+
+    <!-- Wi-Fi -->
+    <div class="panel" role="tabpanel" id="panel-wifi" aria-labelledby="tab-wifi" hidden>
+      <div class="field">
+        <label for="wifi-ssid">اسم الشبكة (SSID)</label>
+        <input class="input" id="wifi-ssid" type="text" dir="auto" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="شبكة البيت" aria-describedby="wifi-ssid-msg" data-persist>
+        <p class="field-msg" id="wifi-ssid-msg" data-hint="لازم يطابق اسم الشبكة اللي في الراوتر بالضبط، حتى الحروف الكبيرة والصغيرة."></p>
+      </div>
+      <fieldset class="field">
+        <legend>نوع الحماية</legend>
+        <div class="segmented">
+          <label><input type="radio" name="wifi-security" value="WPA" checked data-persist-radio><span>WPA/WPA2</span></label>
+          <label><input type="radio" name="wifi-security" value="WEP" data-persist-radio><span>WEP</span></label>
+          <label><input type="radio" name="wifi-security" value="nopass" data-persist-radio><span>بدون</span></label>
+        </div>
+      </fieldset>
+      <div class="field" id="wifi-password-field">
+        <label for="wifi-password">كلمة المرور</label>
+        <div class="input-wrap">
+          <input class="input" id="wifi-password" type="password" dir="auto" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="wifi-password-msg">
+          <button class="icon-btn" type="button" id="wifi-password-toggle" aria-label="إظهار كلمة المرور" aria-pressed="false" aria-controls="wifi-password"><svg width="18" height="18" aria-hidden="true"><use href="#i-eye"/></svg></button>
+        </div>
+        <p class="field-msg" id="wifi-password-msg" data-hint="عشان خصوصيتك، ما نحفظ كلمة المرور في المتصفح أبد."></p>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="wifi-hidden" role="switch" data-persist>
+        <span class="switch-track" aria-hidden="true"></span>
+        <span class="switch-text"><strong>شبكة مخفية</strong><small>فعّله إذا اسم شبكتك ما يطلع في قائمة الشبكات.</small></span>
+      </label>
+    </div>
+
+    <!-- Contact card (vCard) -->
+    <div class="panel" role="tabpanel" id="panel-vcard" aria-labelledby="tab-vcard" hidden>
+      <div class="field-row">
+        <div class="field">
+          <label for="vc-first">الاسم الأول</label>
+          <input class="input" id="vc-first" type="text" dir="auto" autocomplete="given-name" aria-describedby="vc-first-msg" data-persist>
+          <p class="field-msg" id="vc-first-msg" hidden></p>
+        </div>
+        <div class="field">
+          <label for="vc-last">اسم العائلة</label>
+          <input class="input" id="vc-last" type="text" dir="auto" autocomplete="family-name" data-persist>
+        </div>
+      </div>
+      <div class="field-row stack-sm">
+        <div class="field">
+          <label for="vc-phone">الجوال <span class="optional">(اختياري)</span></label>
+          <input class="input" id="vc-phone" type="tel" dir="ltr" inputmode="tel" autocomplete="tel" placeholder="+966 50 123 4567" aria-describedby="vc-phone-msg" data-persist>
+          <p class="field-msg" id="vc-phone-msg" hidden></p>
+        </div>
+        <div class="field">
+          <label for="vc-email">الإيميل <span class="optional">(اختياري)</span></label>
+          <input class="input" id="vc-email" type="email" dir="ltr" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@company.com" aria-describedby="vc-email-msg" data-persist>
+          <p class="field-msg" id="vc-email-msg" hidden></p>
+        </div>
+      </div>
+      <div class="field-row stack-sm">
+        <div class="field">
+          <label for="vc-org">الشركة <span class="optional">(اختياري)</span></label>
+          <input class="input" id="vc-org" type="text" dir="auto" autocomplete="organization" data-persist>
+        </div>
+        <div class="field">
+          <label for="vc-title">المسمى الوظيفي <span class="optional">(اختياري)</span></label>
+          <input class="input" id="vc-title" type="text" dir="auto" autocomplete="organization-title" data-persist>
+        </div>
+      </div>
+      <div class="field">
+        <label for="vc-url">الموقع الإلكتروني <span class="optional">(اختياري)</span></label>
+        <input class="input" id="vc-url" type="url" dir="ltr" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="company.com" aria-describedby="vc-url-msg" data-persist>
+        <p class="field-msg" id="vc-url-msg" hidden></p>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="panel" role="tabpanel" id="panel-email" aria-labelledby="tab-email" hidden>
+      <div class="field">
+        <label for="email-to">يوصل إلى</label>
+        <input class="input" id="email-to" type="email" dir="ltr" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="hello@company.com" aria-describedby="email-to-msg" data-persist>
+        <p class="field-msg" id="email-to-msg" hidden></p>
+      </div>
+      <div class="field">
+        <label for="email-subject">الموضوع <span class="optional">(اختياري)</span></label>
+        <input class="input" id="email-subject" type="text" dir="auto" data-persist>
+      </div>
+      <div class="field">
+        <label for="email-body">الرسالة <span class="optional">(اختياري)</span></label>
+        <textarea class="input" id="email-body" dir="auto" rows="4" data-persist></textarea>
+      </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="panel" role="tabpanel" id="panel-phone" aria-labelledby="tab-phone" hidden>
+      <div class="field">
+        <label for="phone-number">رقم الجوال</label>
+        <input class="input" id="phone-number" type="tel" dir="ltr" inputmode="tel" autocomplete="tel" placeholder="+966 50 123 4567" aria-describedby="phone-number-msg" data-persist>
+        <p class="field-msg" id="phone-number-msg" data-hint="حط مفتاح الدولة (مثل ‎+966) عشان يشتغل من أي مكان."></p>
+      </div>
+    </div>
+
+    <!-- SMS -->
+    <div class="panel" role="tabpanel" id="panel-sms" aria-labelledby="tab-sms" hidden>
+      <div class="field">
+        <label for="sms-number">رقم الجوال</label>
+        <input class="input" id="sms-number" type="tel" dir="ltr" inputmode="tel" autocomplete="tel" placeholder="+966 50 123 4567" aria-describedby="sms-number-msg" data-persist>
+        <p class="field-msg" id="sms-number-msg" data-hint="حط مفتاح الدولة (مثل ‎+966) عشان يشتغل من أي مكان."></p>
+      </div>
+      <div class="field">
+        <label for="sms-body">الرسالة <span class="optional">(اختياري)</span></label>
+        <textarea class="input" id="sms-body" dir="auto" rows="4" placeholder="نص جاهز يقدر الشخص يعدّله قبل لا يرسل" data-persist></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PREVIEW ========== -->
+  <aside class="preview-col" aria-labelledby="preview-heading">
+    <div class="card preview-card">
+      <div class="card-head">
+        <h2 id="preview-heading">المعاينة</h2>
+        <span class="size-chip" id="size-chip" dir="ltr">512 × 512</span>
+      </div>
+
+      <div class="stage" id="stage" data-state="empty">
+        <img id="qr-img" alt="" width="340" height="340">
+        <div class="stage-msg" id="stage-msg" aria-live="polite">
+          <div class="msg-icon" aria-hidden="true"><svg width="24" height="24" id="stage-icon"><use href="#i-qr"/></svg></div>
+          <strong id="stage-title">الكود بيطلع هنا</strong>
+          <p id="stage-text">اكتب رابط الموقع عشان نبدأ.</p>
+        </div>
+      </div>
+
+      <div class="meta" id="meta" hidden>
+        <div class="meta-line"><span id="meta-version">الإصدار 1 · 21 × 21 وحدة</span><span id="meta-ecc">تصحيح الأخطاء M</span></div>
+        <div class="meter" id="meter" role="progressbar" aria-label="السعة المستخدمة" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+        <div class="meta-line"><span>السعة المستخدمة</span><span id="meta-count">0 / 2,331 حرف</span></div>
+        <p class="scan-check" id="scan-check" role="status" hidden><svg width="15" height="15" aria-hidden="true"><use href="#i-check"/></svg><span></span></p>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" type="button" id="btn-png" disabled>
+          <svg width="18" height="18" aria-hidden="true"><use href="#i-download"/></svg>تحميل PNG <small id="png-size" dir="ltr">512 px</small>
+        </button>
+        <div class="actions-row">
+          <button class="btn" type="button" id="btn-svg" disabled><svg width="17" height="17" aria-hidden="true"><use href="#i-vector"/></svg>SVG</button>
+          <button class="btn" type="button" id="btn-copy" disabled><svg width="17" height="17" aria-hidden="true"><use href="#i-copy"/></svg>نسخ</button>
+        </div>
+        <button class="btn" type="button" id="btn-save" disabled><svg width="17" height="17" aria-hidden="true"><use href="#i-save"/></svg><span id="btn-save-label">حفظ في ملف</span></button>
+      </div>
+      <p class="notice is-info copy-note" id="copy-note" role="status" hidden></p>
+      <p class="tip"><svg width="15" height="15" aria-hidden="true" style="margin-top:2px"><use href="#i-info"/></svg>دايم جرّب تمسح الكود بجوالك قبل لا تطبعه.</p>
+    </div>
+  </aside>
+
+  <!-- ========== DESIGN ========== -->
+  <section class="card design-card" aria-labelledby="design-heading">
+    <div class="card-head">
+      <h2 id="design-heading">التصميم</h2>
+      <button class="btn btn-ghost" type="button" id="btn-reset"><svg width="15" height="15" aria-hidden="true"><use href="#i-reset"/></svg>رجّع التصميم الأصلي</button>
+    </div>
+
+    <!-- Colors -->
+    <div class="section">
+      <h3 class="section-title">الألوان</h3>
+      <div class="color-grid">
+        <div class="field">
+          <span class="label" id="fg-label">لون الكود</span>
+          <div class="color-field">
+            <input type="color" id="fg-picker" value="#111111" aria-labelledby="fg-label">
+            <input class="hex" id="fg-hex" type="text" dir="ltr" value="#111111" maxlength="7" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="قيمة لون الكود (hex)">
+          </div>
+        </div>
+        <button class="icon-btn swap-btn" type="button" id="btn-swap" aria-label="بدّل لون الكود مع الخلفية" title="بدّل الألوان"><svg width="16" height="16" aria-hidden="true"><use href="#i-swap"/></svg></button>
+        <div class="field">
+          <span class="label" id="bg-label">الخلفية</span>
+          <div class="color-field">
+            <input type="color" id="bg-picker" value="#ffffff" aria-labelledby="bg-label">
+            <input class="hex" id="bg-hex" type="text" dir="ltr" value="#ffffff" maxlength="7" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="قيمة لون الخلفية (hex)">
+          </div>
+        </div>
+      </div>
+      <p class="notice is-ok" id="contrast-note" role="status"><svg width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg><span></span></p>
+    </div>
+
+    <!-- Shape style -->
+    <div class="section">
+      <h3 class="section-title">الشكل</h3>
+      <fieldset class="choice-group">
+        <legend>النقاط</legend>
+        <div class="choice-grid" style="--cols:4">
+          <label class="choice"><input type="radio" name="dot-type" value="square" checked><span class="choice-body"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" fill="currentColor"><rect x="3" y="3" width="6" height="6"/><rect x="9" y="3" width="6" height="6"/><rect x="3" y="9" width="6" height="6"/><rect x="17" y="9" width="6" height="6"/><rect x="9" y="17" width="6" height="6"/><rect x="17" y="17" width="6" height="6"/></svg>مربعة</span></label>
+          <label class="choice"><input type="radio" name="dot-type" value="rounded"><span class="choice-body"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" fill="currentColor"><path d="M6 3h6a3 3 0 0 1 3 3v3H9v3a3 3 0 0 1-3 3 3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z"/><rect x="17" y="9" width="6" height="6" rx="3"/><path d="M12 17h8a3 3 0 0 1 3 3 3 3 0 0 1-3 3h-8a3 3 0 0 1-3-3 3 3 0 0 1 3-3z"/></svg>مدوّرة</span></label>
+          <label class="choice"><input type="radio" name="dot-type" value="dots"><span class="choice-body"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" fill="currentColor"><circle cx="6" cy="6" r="2.8"/><circle cx="12" cy="6" r="2.8"/><circle cx="6" cy="12" r="2.8"/><circle cx="20" cy="12" r="2.8"/><circle cx="12" cy="20" r="2.8"/><circle cx="20" cy="20" r="2.8"/></svg>دوائر</span></label>
+          <label class="choice"><input type="radio" name="dot-type" value="classy-rounded"><span class="choice-body"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" fill="currentColor"><path d="M7 3h8v6H9v6H3V7a4 4 0 0 1 4-4z"/><path d="M17 9h6v2a4 4 0 0 1-4 4h-2z"/><path d="M9 17h14v2a4 4 0 0 1-4 4H9z"/></svg>أنيقة</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="choice-group">
+        <legend>إطارات الزوايا</legend>
+        <div class="choice-grid" style="--cols:3">
+          <label class="choice"><input type="radio" name="corner-square" value="square" checked><span class="choice-body"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3"><rect x="3.5" y="3.5" width="17" height="17"/></svg>مربع</span></label>
+          <label class="choice"><input type="radio" name="corner-square" value="extra-rounded"><span class="choice-body"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3"><rect x="3.5" y="3.5" width="17" height="17" rx="5.5"/></svg>مدوّر الحواف</span></label>
+          <label class="choice"><input type="radio" name="corner-square" value="dot"><span class="choice-body"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="8.5"/></svg>دائري</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="choice-group">
+        <legend>وسط الزوايا</legend>
+        <div class="choice-grid" style="--cols:3">
+          <label class="choice"><input type="radio" name="corner-dot" value="square" checked><span class="choice-body"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><rect x="6" y="6" width="12" height="12"/></svg>مربع</span></label>
+          <label class="choice"><input type="radio" name="corner-dot" value="dot"><span class="choice-body"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="12" cy="12" r="6.5"/></svg>دائري</span></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Size and margin -->
+    <div class="section">
+      <h3 class="section-title">المقاس والمسافات</h3>
+      <div class="range-grid">
+        <div class="field">
+          <div class="range-head"><label for="size-range">مقاس الصورة</label><output id="size-out" for="size-range">512 بكسل</output></div>
+          <input type="range" id="size-range" min="128" max="1024" step="32" value="512" aria-describedby="size-msg">
+          <p class="field-msg" id="size-msg"></p>
+        </div>
+        <div class="field">
+          <div class="range-head"><label for="margin-range">الهامش الفاضي حول الكود</label><output id="margin-out" for="margin-range">4 وحدات</output></div>
+          <input type="range" id="margin-range" min="0" max="10" step="1" value="4" aria-describedby="margin-msg">
+          <p class="field-msg" id="margin-msg"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error correction -->
+    <div class="section">
+      <fieldset>
+        <legend class="section-title" style="margin-bottom:12px">تصحيح الأخطاء</legend>
+        <div class="choice-grid ecc-grid">
+          <label class="choice"><input type="radio" name="ecc" value="L"><span class="choice-body"><span class="ecc-letter">L</span><span class="ecc-name">منخفض · 7%</span><span class="ecc-desc">أصغر كود، للشاشات والأماكن النظيفة.</span></span></label>
+          <label class="choice"><input type="radio" name="ecc" value="M" checked><span class="choice-body"><span class="ecc-letter">M</span><span class="ecc-name">متوسط · 15%</span><span class="ecc-desc">الأنسب لأغلب الاستخدامات.</span></span></label>
+          <label class="choice"><input type="radio" name="ecc" value="Q"><span class="choice-body"><span class="ecc-letter">Q</span><span class="ecc-name">مرتفع · 25%</span><span class="ecc-desc">للمطبوعات اللي ممكن تنخدش.</span></span></label>
+          <label class="choice"><input type="radio" name="ecc" value="H"><span class="choice-body"><span class="ecc-letter">H</span><span class="ecc-name">عالي جدًا · 30%</span><span class="ecc-desc">الأقوى، ولازم مع الشعار.</span></span></label>
+        </div>
+        <p class="notice is-info" id="ecc-lock-note" hidden><svg width="16" height="16" aria-hidden="true"><use href="#i-info"/></svg><span>مثبّت على <strong>H</strong> طول ما فيه شعار، عشان الكود ينمسح حتى لو وسطه مغطّى.</span></p>
+      </fieldset>
+    </div>
+
+    <!-- Logo -->
+    <div class="section">
+      <h3 class="section-title">الشعار <span class="optional">(اختياري)</span></h3>
+      <div class="dropzone" id="logo-drop">
+        <input type="file" id="logo-input" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" aria-describedby="logo-msg">
+        <label for="logo-input">
+          <span class="dz-icon" aria-hidden="true"><svg width="18" height="18"><use href="#i-upload"/></svg></span>
+          <span class="dz-text"><span id="logo-cta">ارفع شعارك</span><small>PNG أو JPG أو SVG أو WebP · تقدر تسحبه وتفلته هنا</small></span>
+        </label>
+      </div>
+      <p class="field-msg is-error" id="logo-msg" hidden></p>
+
+      <div id="logo-settings" hidden>
+        <div class="logo-row" style="margin-top:12px">
+          <img id="logo-thumb" alt="">
+          <div class="logo-meta"><strong id="logo-name" dir="auto">logo.png</strong><small>بيكون في نص الكود</small></div>
+          <button class="btn btn-ghost" type="button" id="logo-remove"><svg width="15" height="15" aria-hidden="true"><use href="#i-x"/></svg>شيله</button>
+        </div>
+        <div class="field" style="margin-top:14px">
+          <div class="range-head"><label for="logo-size-range">مقاس الشعار</label><output id="logo-size-out" for="logo-size-range">لين 12% من الكود</output></div>
+          <input type="range" id="logo-size-range" min="0.2" max="0.5" step="0.05" value="0.4" aria-describedby="logo-size-msg">
+          <p class="field-msg" id="logo-size-msg"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ========== PROFILES LIST ========== -->
+<main class="page" id="view-profiles" aria-labelledby="profiles-heading" hidden>
+  <div class="page-head">
+    <div>
+      <h2 id="profiles-heading" tabindex="-1">الملفات</h2>
+      <p>سوّ ملف لكل شركة أو شخص، واحفظ أكوادهم فيه عشان تعرف كل كود لمين.</p>
+    </div>
+    <div class="toolbar">
+      <button class="btn" type="button" id="btn-identify"><svg width="17" height="17" aria-hidden="true"><use href="#i-scan"/></svg>مين صاحب الكود؟</button>
+      <button class="btn btn-primary" type="button" id="btn-new-profile"><svg width="17" height="17" aria-hidden="true"><use href="#i-plus"/></svg>ملف جديد</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg>
+      <input class="input" id="profile-search" type="search" dir="auto" placeholder="دوّر باسم الملف أو الكود…" aria-label="بحث في الملفات والأكواد">
+    </div>
+    <button class="btn btn-ghost" type="button" id="btn-backup"><svg width="15" height="15" aria-hidden="true"><use href="#i-archive"/></svg>نسخة احتياطية</button>
+    <button class="btn btn-ghost" type="button" id="btn-restore"><svg width="15" height="15" aria-hidden="true"><use href="#i-download"/></svg>استرجاع نسخة</button>
+    <input type="file" id="restore-input" accept="application/json,.json" class="visually-hidden" tabindex="-1" aria-hidden="true">
+  </div>
+
+  <div class="profile-grid" id="profile-list"></div>
+  <p class="field-msg" id="profiles-noresults" hidden>ما لقينا شي يطابق بحثك.</p>
+
+  <div class="card empty-state" id="profiles-empty" hidden>
+    <div class="msg-icon" aria-hidden="true"><svg width="24" height="24"><use href="#i-folder"/></svg></div>
+    <strong>ما عندك ملفات للحين</strong>
+    <p>سوّ ملف لأول عميل أو شركة، وبعدها احفظ أكوادهم فيه.</p>
+    <button class="btn btn-primary" type="button" id="btn-new-profile-empty"><svg width="17" height="17" aria-hidden="true"><use href="#i-plus"/></svg>سوّ أول ملف</button>
+  </div>
+
+  <p class="notice is-info"><svg width="16" height="16" aria-hidden="true"><use href="#i-info"/></svg><span>الملفات محفوظة في هالمتصفح بس، وما تنرسل لأي مكان. سوّ «نسخة احتياطية» بين فترة وفترة عشان ما تضيع لو مسحت بيانات المتصفح.</span></p>
+</main>
+
+<!-- ========== ONE PROFILE ========== -->
+<main class="page" id="view-profile" aria-labelledby="pv-name" hidden>
+  <a class="back-link" href="#/profiles"><svg width="16" height="16" aria-hidden="true"><use href="#i-back"/></svg>كل الملفات</a>
+
+  <section class="card profile-hero">
+    <div class="hero-top">
+      <div class="hero-main">
+        <span class="avatar lg" id="pv-avatar" aria-hidden="true"></span>
+        <div class="hero-titles">
+          <h2 id="pv-name" tabindex="-1"></h2>
+          <div class="pc-meta"><span class="badge" id="pv-kind"></span><span id="pv-count"></span></div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" id="btn-profile-newcode"><svg width="17" height="17" aria-hidden="true"><use href="#i-plus"/></svg>كود جديد</button>
+        <button class="btn" type="button" id="btn-profile-edit"><svg width="16" height="16" aria-hidden="true"><use href="#i-edit"/></svg>تعديل</button>
+        <button class="btn btn-danger" type="button" id="btn-profile-delete"><svg width="16" height="16" aria-hidden="true"><use href="#i-trash"/></svg>حذف</button>
+      </div>
+    </div>
+    <div class="hero-info" id="pv-info"></div>
+  </section>
+
+  <h3 class="section-title" style="margin:4px 0 0">أكواد الملف</h3>
+  <div class="code-grid" id="pv-codes"></div>
+  <div class="card empty-state" id="pv-empty" hidden>
+    <div class="msg-icon" aria-hidden="true"><svg width="24" height="24"><use href="#i-qr"/></svg></div>
+    <strong>ما فيه أكواد في هالملف</strong>
+    <p>سوّ كود جديد واحفظه هنا.</p>
+    <button class="btn btn-primary" type="button" id="btn-profile-newcode-empty"><svg width="17" height="17" aria-hidden="true"><use href="#i-plus"/></svg>كود جديد</button>
+  </div>
+</main>
+
+<footer class="footer">كل اللي تكتبه يبقى في جهازك. الأكواد ثابتة وما تنتهي أبد.</footer>
+
+<!-- ========== DIALOGS ========== -->
+<!-- Create / edit a profile -->
+<dialog id="profile-dialog" aria-labelledby="pf-title">
+  <form class="dialog-body" id="profile-form" novalidate>
+    <div class="dialog-head">
+      <h2 id="pf-title">ملف جديد</h2>
+      <button class="icon-btn" type="button" data-close aria-label="إغلاق"><svg width="18" height="18" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <input type="hidden" id="pf-id">
+    <div class="field">
+      <label for="pf-name">الاسم</label>
+      <input class="input" id="pf-name" type="text" dir="auto" maxlength="80" placeholder="مثلًا: مخبز السعادة" autocomplete="off" required>
+    </div>
+    <fieldset class="field">
+      <legend>النوع</legend>
+      <div class="segmented">
+        <label><input type="radio" name="pf-kind" value="company" checked><span>شركة</span></label>
+        <label><input type="radio" name="pf-kind" value="person"><span>فرد</span></label>
+        <label><input type="radio" name="pf-kind" value="other"><span>جهة أخرى</span></label>
+      </div>
+    </fieldset>
+    <div class="field-row stack-sm">
+      <div class="field">
+        <label for="pf-phone">الجوال <span class="optional">(اختياري)</span></label>
+        <input class="input" id="pf-phone" type="tel" dir="ltr" inputmode="tel" autocomplete="off" placeholder="+966 50 123 4567">
+      </div>
+      <div class="field">
+        <label for="pf-email">الإيميل <span class="optional">(اختياري)</span></label>
+        <input class="input" id="pf-email" type="email" dir="ltr" inputmode="email" autocomplete="off" placeholder="name@company.com">
+      </div>
+    </div>
+    <div class="field">
+      <label for="pf-notes">ملاحظات <span class="optional">(اختياري)</span></label>
+      <textarea class="input" id="pf-notes" dir="auto" rows="3" maxlength="500" placeholder="أي شي تبي تتذكره عن العميل"></textarea>
+    </div>
+    <p class="field-msg is-error" id="pf-error" role="alert" hidden></p>
+    <div class="dialog-actions">
+      <button class="btn btn-primary" type="submit">حفظ</button>
+      <button class="btn" type="button" data-close>إلغاء</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Save the current code into a profile -->
+<dialog id="save-dialog" aria-labelledby="sv-title">
+  <form class="dialog-body" id="save-form" novalidate>
+    <div class="dialog-head">
+      <h2 id="sv-title">حفظ الكود في ملف</h2>
+      <button class="icon-btn" type="button" data-close aria-label="إغلاق"><svg width="18" height="18" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="field">
+      <label for="sv-name">اسم الكود</label>
+      <input class="input" id="sv-name" type="text" dir="auto" maxlength="80" placeholder="مثلًا: منيو الفرع الرئيسي" autocomplete="off" required>
+    </div>
+    <div class="field">
+      <label for="sv-profile">الملف</label>
+      <select class="input" id="sv-profile"></select>
+    </div>
+    <div class="field-row stack-sm" id="sv-new-wrap" hidden>
+      <div class="field">
+        <label for="sv-new-name">اسم الملف الجديد</label>
+        <input class="input" id="sv-new-name" type="text" dir="auto" maxlength="80" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="sv-new-kind">النوع</label>
+        <select class="input" id="sv-new-kind">
+          <option value="company">شركة</option>
+          <option value="person">فرد</option>
+          <option value="other">جهة أخرى</option>
+        </select>
+      </div>
+    </div>
+    <label class="checkbox-row" id="sv-copy-wrap" hidden><input type="checkbox" id="sv-copy"> احفظه ككود جديد بدل ما تعدّل القديم</label>
+    <p class="field-msg is-error" id="sv-error" role="alert" hidden></p>
+    <div class="dialog-actions">
+      <button class="btn btn-primary" type="submit" id="sv-submit">حفظ</button>
+      <button class="btn" type="button" data-close>إلغاء</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Yes / no confirmation -->
+<dialog id="confirm-dialog" aria-labelledby="cf-title" aria-describedby="cf-text">
+  <form class="dialog-body" method="dialog">
+    <h2 id="cf-title" class="dialog-title"></h2>
+    <p id="cf-text" class="dialog-text"></p>
+    <div class="dialog-actions">
+      <button class="btn btn-danger-solid" value="ok" id="cf-ok">احذف</button>
+      <button class="btn" value="cancel" id="cf-cancel">إلغاء</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Who owns this code? -->
+<dialog id="identify-dialog" aria-labelledby="id-title">
+  <div class="dialog-body">
+    <div class="dialog-head">
+      <h2 id="id-title">مين صاحب الكود؟</h2>
+      <button class="icon-btn" type="button" data-close aria-label="إغلاق"><svg width="18" height="18" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <p class="dialog-text">ارفع صورة أو سكرين شوت لأي كود QR، ونقولك لأي ملف يرجع.</p>
+    <div class="dropzone" id="identify-drop">
+      <input type="file" id="identify-input" accept="image/*">
+      <label for="identify-input">
+        <span class="dz-icon" aria-hidden="true"><svg width="18" height="18"><use href="#i-scan"/></svg></span>
+        <span class="dz-text"><span>اختر صورة الكود</span><small>أو اسحبها وافلتها هنا</small></span>
+      </label>
+    </div>
+    <div id="identify-result" aria-live="polite"></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<!-- Libraries: qr-code-styling draws the styled code; qrcode-generator (the same encoder it uses
+     internally) lets us check capacity and module count before drawing. -->
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js"
+        integrity="sha384-P7sw4KeI1SDhOs6wYFsBysIIHFqMTgG4y9vunEfL8ZuV0WhnHsh9MRu9Rso17MtY"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"
+        integrity="sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k"
+        crossorigin="anonymous"></script>
+<!-- jsQR reads the finished image back, to confirm every code actually scans. -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"
+        integrity="sha384-b5Ya4Bq3qCyz39m2ISh+4DxjAIljdeFwK/BsXLuj9gugaNwAcj/ia15fxNZL9Nlx"
+        crossorigin="anonymous"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =========================================================
+     1. CONSTANTS
+     ========================================================= */
+
+  var STORAGE_KEY = 'quietzone.qr.settings.v1';
+  var TYPING_DELAY = 200;     // ms to wait after typing before redrawing
+  var DESIGN_DELAY = 60;      // ms to wait after moving a slider or color picker
+  var MAX_LOGO_FILE = 10 * 1024 * 1024; // 10 MB upload limit
+  var LOGO_MAX_SIDE = 512;    // logos are resized to at most 512 px (plenty for the center)
+  var MIN_PX_PER_MODULE = 3;  // never draw a module smaller than 3 px (smaller gets unreliable)
+  var LOGO_MIN_VERSION = 4;   // with a logo, use at least a 33×33 code so the hidden center is a small share
+  var LOGO_MIN_SIZE = 0.2;    // smallest logo size the auto-shrink will go down to
+  var LOGO_STEP = 0.05;       // how much the logo shrinks per attempt if the scan check fails
+
+  // Maximum amount of data a QR code (version 40) can hold, by encoding mode and error correction.
+  // These are the official figures from the QR code standard (ISO/IEC 18004).
+  var CAPACITY = {
+    Numeric:      { L: 7089, M: 5596, Q: 3993, H: 3057 },
+    Alphanumeric: { L: 4296, M: 3391, Q: 2420, H: 1852 },
+    Byte:         { L: 2953, M: 2331, Q: 1663, H: 1273 }
+  };
+
+  // How much of the code the library may hide behind a logo, per level (the library uses these too).
+  var ECC_RECOVERY = { L: 0.07, M: 0.15, Q: 0.25, H: 0.30 };
+
+  var DEFAULT_DESIGN = {
+    fg: '#111111',
+    bg: '#ffffff',
+    size: 512,
+    margin: 4,
+    ecc: 'M',
+    dotType: 'square',
+    cornerSquare: 'square',
+    cornerDot: 'square',
+    logoSize: 0.4
+  };
+
+  var TYPES = ['url', 'text', 'wifi', 'vcard', 'email', 'phone', 'sms'];
+  var DOT_TYPES = ['square', 'rounded', 'dots', 'classy-rounded'];
+  var CORNER_SQUARE_TYPES = ['square', 'extra-rounded', 'dot'];
+  var CORNER_DOT_TYPES = ['square', 'dot'];
+  var ECC_LEVELS = ['L', 'M', 'Q', 'H'];
+
+  var EMPTY_HINTS = {
+    url: 'اكتب رابط الموقع عشان نبدأ.',
+    text: 'اكتب أي نص عشان نبدأ.',
+    wifi: 'اكتب اسم الشبكة عشان نبدأ.',
+    vcard: 'حط اسم أو شركة عشان نبدأ.',
+    email: 'اكتب الإيميل عشان نبدأ.',
+    phone: 'اكتب رقم الجوال عشان نبدأ.',
+    sms: 'اكتب رقم الجوال عشان نبدأ.'
+  };
+
+  // Simple, permissive checks. They catch typos without rejecting unusual-but-valid input.
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var DOMAIN_RE = /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$/i;
+
+
+  /* =========================================================
+     2. APP STATE
+     Everything the app needs to remember lives in this one object.
+     ========================================================= */
+
+  var state = {
+    type: 'url',                          // the active tab
+    design: copy(DEFAULT_DESIGN),         // colors, size, styles…
+    logo: null,                           // { dataUrl, name } once a logo is uploaded
+    current: null,                        // details of the code currently on screen
+    previewUrl: null,                     // object URL of the preview image
+    renderId: 0,                          // increases on every render, to ignore stale results
+    renderTimer: null,
+    toastTimer: null,
+    editing: null,                        // { codeId, profileId } while editing a saved code
+    targetProfileId: null,                // profile a brand-new code is being made for
+    viewProfileId: null                   // profile shown on the profile page
+  };
+
+
+  /* =========================================================
+     3. SMALL HELPERS
+     ========================================================= */
+
+  function $(id) { return document.getElementById(id); }
+
+  function copy(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+  function radioValue(name) {
+    var el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : null;
+  }
+
+  function setRadio(name, value) {
+    var el = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
+    if (el) el.checked = true;
+  }
+
+  function formatNumber(n) { return Number(n).toLocaleString('en-US'); }
+
+  // Wraps left-to-right text (links, numbers like "42 / 2,331" or "4:1") in invisible
+  // direction marks, so it keeps its order inside an Arabic (right-to-left) sentence.
+  function ltr(text) { return '⁦' + text + '⁩'; }
+
+  function clamp(n, min, max) { return Math.min(max, Math.max(min, n)); }
+
+  // Number of bytes a string takes in UTF-8 (emoji and accents take more than one).
+  function utf8Length(str) { return new TextEncoder().encode(str).length; }
+
+  // Turn arbitrary text into something safe for a file name: "Café Menu!" -> "cafe-menu"
+  function slugify(str) {
+    return String(str || '')
+      .normalize('NFKD').replace(/[̀-ͯ]/g, '')
+      .normalize('NFC')
+      .replace(/[^\p{L}\p{M}\p{N}]+/gu, '-')   // keep letters in any language (Arabic too) and digits
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase()
+      .slice(0, 40);
+  }
+
+  function isHexColor(value) { return /^#[0-9a-f]{6}$/i.test(value); }
+
+  // Accept "#abc", "abc", "#aabbcc" or "aabbcc" and return "#aabbcc" (or null if invalid).
+  function normalizeHex(value) {
+    var v = String(value || '').trim().replace(/^#/, '');
+    if (/^[0-9a-f]{3}$/i.test(v)) v = v.replace(/./g, '$&$&');
+    return /^[0-9a-f]{6}$/i.test(v) ? '#' + v.toLowerCase() : null;
+  }
+
+
+  /* =========================================================
+     4. BUILDING THE TEXT INSIDE THE QR CODE
+     Each content type has a "builder" that reads its form fields and returns:
+       { status: 'empty' | 'invalid' | 'ok', data, messages, label, alt }
+     "messages" maps a field id to { kind: 'error'|'warn'|'info', text }.
+     ========================================================= */
+
+  function result(status, extra) {
+    var r = { status: status, data: '', messages: {}, label: '', alt: '' };
+    for (var k in extra) r[k] = extra[k];
+    return r;
+  }
+
+  // Checks a web address and returns a URL object, or null if it isn't a usable http(s) link.
+  function parseWebUrl(str) {
+    var u;
+    try { u = new URL(str); } catch (e) { return null; }
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+    var host = u.hostname;
+    var ok = host === 'localhost' ||
+      /^\d{1,3}(\.\d{1,3}){3}$/.test(host) ||
+      /^\[[0-9a-f:.]+\]$/i.test(host) ||
+      DOMAIN_RE.test(host);
+    return ok ? u : null;
+  }
+
+  // Adds https:// when the user left the scheme out, then validates.
+  // Returns { url, parsed } or null.
+  function normalizeWebUrl(raw) {
+    var withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(raw) ? raw : 'https://' + raw;
+    var parsed = parseWebUrl(withScheme);
+    if (!parsed) return null;
+    // Keep what the user typed, unless it contains spaces or non-ASCII characters that must be encoded.
+    var url = /[^\x21-\x7e]/.test(withScheme) ? parsed.href : withScheme;
+    return { url: url, parsed: parsed };
+  }
+
+  // Phone numbers: keep a leading "+" and digits; drop spaces, dashes, dots and brackets.
+  function cleanPhone(raw) {
+    // Arabic-Indic digits (٠١٢… and ۰۱۲…) are turned into 0-9 so either keyboard works.
+    var trimmed = String(raw || '').trim()
+      .replace(/[٠-٩]/g, function (c) { return String(c.charCodeAt(0) - 0x0660); })
+      .replace(/[۰-۹]/g, function (c) { return String(c.charCodeAt(0) - 0x06F0); });
+    var cleaned = trimmed.replace(/[\s().\-‐-―]/g, '');
+    return /^\+?\d{3,15}$/.test(cleaned) ? cleaned : null;
+  }
+
+  // ---- URL ----
+  function buildUrl() {
+    var raw = $('url-input').value.trim();
+    if (!raw) return result('empty');
+    var norm = normalizeWebUrl(raw);
+    if (!norm) {
+      return result('invalid', { messages: { 'url-input': { kind: 'error', text: 'هذا ما يبين إنه رابط موقع. جرّب شي مثل ' + ltr('example.com/page') + '.' } } });
+    }
+    var messages = {};
+    if (norm.url !== raw) messages['url-input'] = { kind: 'info', text: 'بيفتح ' + ltr(norm.url) };
+    return result('ok', {
+      data: norm.url, messages: messages,
+      label: norm.parsed.hostname.replace(/^www\./, ''),
+      alt: 'رمز QR يفتح ' + norm.url
+    });
+  }
+
+  // ---- Plain text ----
+  function buildText() {
+    var text = $('text-input').value;
+    if (!text.trim()) return result('empty');
+    var chars = Array.from(text).length;
+    return result('ok', {
+      data: text,
+      messages: { 'text-input': { kind: 'info', text: formatNumber(chars) + ' حرف' } },
+      label: 'text',
+      alt: 'رمز QR فيه النص: ' + text.slice(0, 120)
+    });
+  }
+
+  // ---- Wi-Fi ----
+  // Format (ZXing / Android / iOS):  WIFI:T:WPA;S:<name>;P:<password>;H:true;;
+  // The characters \ ; , : and " must be escaped with a backslash.
+  function escapeWifi(value) {
+    return value.replace(/([\\;,:"])/g, '\\$1');
+  }
+
+  function buildWifi() {
+    var ssid = $('wifi-ssid').value;      // not trimmed: spaces can be part of a real network name
+    var password = $('wifi-password').value;
+    var security = radioValue('wifi-security') || 'WPA';
+    var hidden = $('wifi-hidden').checked;
+    var messages = {};
+
+    if (!ssid && !password) return result('empty');
+
+    if (!ssid.trim()) {
+      messages['wifi-ssid'] = { kind: 'error', text: 'اكتب اسم الشبكة.' };
+    } else if (utf8Length(ssid) > 32) {
+      messages['wifi-ssid'] = { kind: 'warn', text: 'اسم الشبكة أقصاه 32 بايت (الحروف العربية تاخذ بايتين). تأكد إنه نفس اللي في الراوتر.' };
+    } else if (ssid !== ssid.trim()) {
+      messages['wifi-ssid'] = { kind: 'warn', text: 'الاسم يبدأ أو ينتهي بمسافة. عادي بس لو اسم شبكتك فعلًا كذا.' };
+    }
+
+    if (security !== 'nopass') {
+      if (!password) {
+        messages['wifi-password'] = { kind: 'error', text: 'اكتب كلمة المرور، أو خلّ نوع الحماية «بدون».' };
+      } else if (security === 'WPA' && (password.length < 8 || password.length > 63) && !/^[0-9a-f]{64}$/i.test(password)) {
+        messages['wifi-password'] = { kind: 'warn', text: 'كلمات مرور WPA عادةً من 8 إلى 63 حرف. تأكد ما فيها غلط.' };
+      } else if (security === 'WEP' && [5, 13].indexOf(password.length) === -1 && !/^([0-9a-f]{10}|[0-9a-f]{26})$/i.test(password)) {
+        messages['wifi-password'] = { kind: 'warn', text: 'مفاتيح WEP عادةً 5 أو 13 حرف، أو 10 أو 26 خانة hex.' };
+      }
+    }
+
+    if (hasErrors(messages)) return result('invalid', { messages: messages });
+
+    var data = 'WIFI:T:' + security + ';S:' + escapeWifi(ssid) + ';';
+    if (security !== 'nopass') data += 'P:' + escapeWifi(password) + ';';
+    if (hidden) data += 'H:true;';
+    data += ';';
+
+    return result('ok', {
+      data: data, messages: messages,
+      label: ssid,
+      alt: 'رمز QR للاتصال بشبكة الواي فاي ' + ssid
+    });
+  }
+
+  // ---- Contact card (vCard 3.0, RFC 2426) ----
+  // Text values must escape backslash, comma, semicolon and newlines.
+  function escapeVcard(value) {
+    return value
+      .replace(/\\/g, '\\\\')
+      .replace(/\r\n|\r|\n/g, '\\n')
+      .replace(/;/g, '\\;')
+      .replace(/,/g, '\\,');
+  }
+
+  function buildVcard() {
+    var first = $('vc-first').value.trim();
+    var last = $('vc-last').value.trim();
+    var phoneRaw = $('vc-phone').value.trim();
+    var email = $('vc-email').value.trim();
+    var org = $('vc-org').value.trim();
+    var title = $('vc-title').value.trim();
+    var urlRaw = $('vc-url').value.trim();
+    var messages = {};
+
+    if (!first && !last && !phoneRaw && !email && !org && !title && !urlRaw) return result('empty');
+
+    var phone = '';
+    if (phoneRaw) {
+      phone = cleanPhone(phoneRaw);
+      if (!phone) messages['vc-phone'] = { kind: 'error', text: 'اكتب أرقام بس، وتقدر تبدأ بـ + ومفتاح الدولة.' };
+    }
+    if (email && !EMAIL_RE.test(email)) {
+      messages['vc-email'] = { kind: 'error', text: 'الإيميل ناقص شي، تأكد منه.' };
+    }
+    var website = '';
+    if (urlRaw) {
+      var norm = normalizeWebUrl(urlRaw);
+      if (!norm) messages['vc-url'] = { kind: 'error', text: 'هذا ما يبين إنه رابط موقع.' };
+      else website = norm.url;
+    }
+    var fullName = [first, last].filter(Boolean).join(' ');
+    if (!fullName && !org) {
+      messages['vc-first'] = { kind: 'error', text: 'حط اسم أو شركة عشان جهة الاتصال يكون لها عنوان.' };
+    }
+
+    if (hasErrors(messages)) return result('invalid', { messages: messages });
+
+    // FN (formatted name) and N (structured name) are both required by vCard 3.0.
+    var lines = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      'N:' + escapeVcard(last) + ';' + escapeVcard(first) + ';;;',
+      'FN:' + escapeVcard(fullName || org)
+    ];
+    if (org) lines.push('ORG:' + escapeVcard(org));
+    if (title) lines.push('TITLE:' + escapeVcard(title));
+    if (phone) lines.push('TEL;TYPE=CELL:' + phone);
+    if (email) lines.push('EMAIL;TYPE=INTERNET:' + email);
+    if (website) lines.push('URL:' + website);
+    lines.push('END:VCARD');
+
+    return result('ok', {
+      data: lines.join('\r\n'),   // vCard lines end with CRLF
+      messages: messages,
+      label: fullName || org,
+      alt: 'رمز QR لبطاقة جهة الاتصال: ' + (fullName || org)
+    });
+  }
+
+  // ---- Email (mailto:, RFC 6068) ----
+  function encodeMailtoPart(value) {
+    // Line breaks must be CRLF (%0D%0A) in mailto links.
+    return encodeURIComponent(value.replace(/\r\n|\r|\n/g, '\r\n'));
+  }
+
+  function buildEmail() {
+    var to = $('email-to').value.trim();
+    var subject = $('email-subject').value;
+    var body = $('email-body').value;
+    var messages = {};
+
+    if (!to && !subject.trim() && !body.trim()) return result('empty');
+    if (!to) messages['email-to'] = { kind: 'error', text: 'اكتب الإيميل اللي تبي الرسالة توصله.' };
+    else if (!EMAIL_RE.test(to)) messages['email-to'] = { kind: 'error', text: 'الإيميل ناقص شي، تأكد منه.' };
+    if (hasErrors(messages)) return result('invalid', { messages: messages });
+
+    // Characters with a special meaning in URLs must be encoded inside the address too.
+    var address = to.replace(/[%?#&]/g, function (c) { return encodeURIComponent(c); });
+    var params = [];
+    if (subject.trim()) params.push('subject=' + encodeMailtoPart(subject.trim()));
+    if (body.trim()) params.push('body=' + encodeMailtoPart(body));
+
+    return result('ok', {
+      data: 'mailto:' + address + (params.length ? '?' + params.join('&') : ''),
+      label: to,
+      alt: 'رمز QR يكتب إيميل إلى ' + to
+    });
+  }
+
+  // ---- Phone (tel:, RFC 3966) ----
+  function buildPhone() {
+    var raw = $('phone-number').value.trim();
+    if (!raw) return result('empty');
+    var phone = cleanPhone(raw);
+    if (!phone) return result('invalid', { messages: { 'phone-number': { kind: 'error', text: 'اكتب أرقام بس (من 3 إلى 15 رقم)، وتقدر تبدأ بـ + ومفتاح الدولة.' } } });
+    return result('ok', { data: 'tel:' + phone, label: phone, alt: 'رمز QR يتصل على ' + phone });
+  }
+
+  // ---- SMS (sms:, RFC 5724) ----
+  function buildSms() {
+    var raw = $('sms-number').value.trim();
+    var body = $('sms-body').value;
+    if (!raw && !body.trim()) return result('empty');
+    var phone = cleanPhone(raw);
+    if (!raw) return result('invalid', { messages: { 'sms-number': { kind: 'error', text: 'اكتب الرقم اللي تبي الرسالة توصله.' } } });
+    if (!phone) return result('invalid', { messages: { 'sms-number': { kind: 'error', text: 'اكتب أرقام بس (من 3 إلى 15 رقم)، وتقدر تبدأ بـ + ومفتاح الدولة.' } } });
+    var data = 'sms:' + phone + (body.trim() ? '?body=' + encodeURIComponent(body) : '');
+    return result('ok', { data: data, label: phone, alt: 'رمز QR يرسل رسالة إلى ' + phone });
+  }
+
+  var BUILDERS = { url: buildUrl, text: buildText, wifi: buildWifi, vcard: buildVcard, email: buildEmail, phone: buildPhone, sms: buildSms };
+
+  function hasErrors(messages) {
+    return Object.keys(messages).some(function (k) { return messages[k].kind === 'error'; });
+  }
+
+
+  /* =========================================================
+     5. ENCODING AND CAPACITY
+     ========================================================= */
+
+  // QR codes have compact modes for digits and for UPPERCASE text; everything else is stored as bytes.
+  // The drawing library reads strings one byte per character, so we convert text to UTF-8 bytes first.
+  // That keeps accents, Arabic, Chinese, emoji, etc. intact when scanned.
+  function encodeForQr(text) {
+    var mode = 'Byte';
+    if (/^[0-9]+$/.test(text)) mode = 'Numeric';
+    else if (/^[0-9A-Z $%*+\-./:]+$/.test(text)) mode = 'Alphanumeric';
+
+    var isAscii = /^[\x00-\x7f]*$/.test(text);
+    var data = text;
+    if (!isAscii) {
+      var bytes = new TextEncoder().encode(text);
+      data = '';
+      for (var i = 0; i < bytes.length; i += 8192) {
+        data += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+      }
+    }
+    return { data: data, mode: mode, used: data.length, isAscii: isAscii };
+  }
+
+  // Asks the encoder which QR version fits this data. Returns { fits, limit, count, version }.
+  function checkCapacity(encoded, ecc) {
+    var limit = CAPACITY[encoded.mode][ecc];
+    if (encoded.used > limit) return { fits: false, limit: limit };
+    try {
+      var qr = qrcode(0, ecc);             // 0 = pick the smallest version that fits
+      qr.addData(encoded.data, encoded.mode);
+      qr.make();
+      var count = qr.getModuleCount();
+      return { fits: true, limit: limit, count: count, version: (count - 17) / 4 };
+    } catch (err) {
+      return { fits: false, limit: limit };  // "code length overflow"
+    }
+  }
+
+  // The error correction actually used: always H when a logo covers part of the code.
+  function effectiveEcc() {
+    return state.logo ? 'H' : state.design.ecc;
+  }
+
+
+  /* =========================================================
+     6. DRAWING THE QR CODE
+     ========================================================= */
+
+  // The library's "margin" is in pixels. We want it in modules (QR "squares"),
+  // so we size each module to fit the code plus the quiet zone on both sides.
+  function computeGeometry(count) {
+    var d = state.design;
+    var modulesAcross = count + d.margin * 2;
+    var minSize = modulesAcross * MIN_PX_PER_MODULE;
+    var size = Math.max(d.size, minSize);
+    var marginPx = Math.round(d.margin * size / modulesAcross);
+    var modulePx = Math.floor((size - marginPx * 2) / count);
+    return { size: size, marginPx: marginPx, modulePx: modulePx, enlarged: size > d.size };
+  }
+
+  // Builds the options object for qr-code-styling (see its README for every option).
+  // "plan" holds the QR version and the logo size chosen for this drawing.
+  // variant: 'styled' (what the user sees), or for the scan check only:
+  //          'plain' (black squares, with logo) and 'bare' (black squares, no logo).
+  function buildStylingOptions(encoded, ecc, geo, plan, drawType, variant) {
+    var d = state.design;
+    var plain = variant === 'plain' || variant === 'bare';
+    if (plain) {
+      d = Object.assign({}, d, { fg: '#000000', bg: '#ffffff', dotType: 'square', cornerSquare: 'square', cornerDot: 'square' });
+    }
+    var options = {
+      type: drawType,                       // 'canvas' (for PNG) or 'svg'
+      width: geo.size,
+      height: geo.size,
+      margin: geo.marginPx,
+      data: encoded.data,
+      qrOptions: { typeNumber: plan.version, mode: encoded.mode, errorCorrectionLevel: ecc },
+      dotsOptions: { type: d.dotType, color: d.fg, roundSize: true },
+      cornersSquareOptions: { type: d.cornerSquare, color: d.fg },
+      cornersDotOptions: { type: d.cornerDot, color: d.fg },
+      backgroundOptions: { color: d.bg }
+    };
+    if (state.logo && variant !== 'bare') {
+      options.image = state.logo.dataUrl;
+      options.imageOptions = {
+        hideBackgroundDots: true,           // clear the dots behind the logo
+        imageSize: plan.logoSize,           // share of the error budget the logo may use
+        margin: Math.max(1, Math.round(geo.modulePx / 2)),
+        saveAsBlob: false                   // our logo is already an embedded data URL
+      };
+    }
+    return options;
+  }
+
+  // Waits a moment after the last change, then redraws (so typing never lags).
+  function scheduleRender(delay) {
+    clearTimeout(state.renderTimer);
+    state.renderTimer = setTimeout(function () {
+      render();
+      saveSettings();
+    }, delay);
+  }
+
+  // The main update: read the form → build data → check it fits → draw → show.
+  function render() {
+    var renderId = ++state.renderId;
+    var built = BUILDERS[state.type]();
+    showFieldMessages(built.messages);
+
+    if (built.status === 'empty') {
+      return showStage('empty', 'الكود بيطلع هنا', EMPTY_HINTS[state.type]);
+    }
+    if (built.status === 'invalid') {
+      return showStage('invalid', 'باقي شوي', 'عدّل الخانة المحددة ويطلع لك الكود.');
+    }
+
+    var ecc = effectiveEcc();
+    var encoded = encodeForQr(built.data);
+    var capacity = checkCapacity(encoded, ecc);
+    updateMeta(encoded, capacity, ecc);
+
+    if (!capacity.fits) {
+      var unit = encoded.isAscii ? 'حرف' : 'بايت';
+      var tip = state.logo
+        ? 'اختصره، أو شيل الشعار عشان تقدر تختار مستوى تصحيح أقل.'
+        : (ecc !== 'L' ? 'اختصره، أو اختر مستوى تصحيح أخطاء أقل.' : 'اختصره عشان يدخل.');
+      var extra = encoded.isAscii ? '' : ' الحرف العربي ياخذ بايتين، والإيموجي لين 4 بايت.';
+      return showStage('overflow', 'المحتوى كثير على كود واحد',
+        'عندك ' + formatNumber(encoded.used) + ' ' + unit + '، والحد ' + formatNumber(capacity.limit) +
+        ' مع مستوى تصحيح الأخطاء ' + ecc + '. ' + tip + extra);
+    }
+
+    // The "plan": which QR version to use and how big the logo may be.
+    var plan = { version: capacity.version, count: capacity.count, logoSize: state.logo ? state.design.logoSize : 0 };
+    if (state.logo && plan.version < LOGO_MIN_VERSION) {
+      // Tiny codes have very little spare data, so a center logo would break them. Use a slightly denser code.
+      plan.version = LOGO_MIN_VERSION;
+      plan.count = 17 + 4 * LOGO_MIN_VERSION;
+    }
+    updateMeta(encoded, { fits: true, limit: capacity.limit, version: plan.version, count: plan.count }, ecc);
+    var geo = computeGeometry(plan.count);
+    updateSizeMessages(geo);
+
+    drawAndVerify(encoded, ecc, geo, plan, renderId).then(function (out) {
+      if (!out || renderId !== state.renderId) return;   // a newer render already started
+      state.current = {
+        blob: out.blob, encoded: encoded, ecc: ecc, geo: geo, plan: plan,
+        raw: built.data,                    // exact text inside the code (used to find its owner later)
+        label: built.label,
+        summary: summaryFor(state.type),
+        filename: 'qr-' + state.type + (slugify(built.label) ? '-' + slugify(built.label) : '')
+      };
+      showPreviewImage(out.blob, built.alt, geo.size);
+      showScanCheck(out.verified, plan);
+    }).catch(function () {
+      if (renderId !== state.renderId) return;
+      showStage('error', 'ما قدرنا نرسم الكود', 'صار خطأ وقت الرسم. جرّب محتوى أو إعدادات ثانية.');
+    });
+  }
+
+  // Draws one variant of the code and returns it as a PNG file (Blob).
+  // Drawing is asynchronous; getRawData waits for it to finish.
+  function drawPng(encoded, ecc, geo, plan, variant) {
+    return new QRCodeStyling(buildStylingOptions(encoded, ecc, geo, plan, 'canvas', variant)).getRawData('png');
+  }
+
+  function drawAndCheck(encoded, ecc, geo, plan, variant) {
+    return drawPng(encoded, ecc, geo, plan, variant).then(function (blob) {
+      return blob ? verifyScannable(blob, encoded.data) : null;
+    });
+  }
+
+  // Draws the code, then reads it back to make sure it decodes to exactly the right data.
+  // Our in-browser reader (jsQR) is simpler than a phone camera: it can trip over round dots or
+  // a few specific code sizes. So before blaming the design we compare against plain versions:
+  //  1. The styled image scans                         → passed.
+  //  2. A plain black-square copy (with logo) scans    → passed; only the style confused our reader.
+  //  3. A bare copy (plain, no logo) doesn't scan      → our reader can't judge this code; say nothing.
+  //  4. The bare copy scans but the logo copy doesn't  → the logo hides too much: shrink it and retry.
+  // "baseline" remembers step 3's answer between retries.
+  function drawAndVerify(encoded, ecc, geo, plan, renderId, baseline) {
+    return drawPng(encoded, ecc, geo, plan, 'styled').then(function (blob) {
+      if (renderId !== state.renderId) return null;
+      if (!blob) throw new Error('empty');
+      var done = function (verified) { return { blob: blob, verified: verified }; };
+
+      return verifyScannable(blob, encoded.data).then(function (styledOk) {
+        if (styledOk !== false) return done(styledOk);                       // step 1
+        var plainCheck = plan.logoSize ? drawAndCheck(encoded, ecc, geo, plan, 'plain') : Promise.resolve(false);
+        return plainCheck.then(function (plainOk) {
+          if (plainOk === true) return done(true);                           // step 2
+          var bareCheck = baseline !== undefined ? Promise.resolve(baseline) : drawAndCheck(encoded, ecc, geo, plan, 'bare');
+          return bareCheck.then(function (bareOk) {
+            if (renderId !== state.renderId) return null;
+            if (bareOk !== true) return done(null);                          // step 3
+            if (!plan.logoSize) return done(true);
+            if (plan.logoSize > LOGO_MIN_SIZE + 0.001) {                       // step 4
+              plan.logoSize = Math.round((plan.logoSize - LOGO_STEP) * 100) / 100;
+              return drawAndVerify(encoded, ecc, geo, plan, renderId, true);
+            }
+            return done(false);
+          });
+        });
+      });
+    });
+  }
+
+  // Decodes the image with jsQR (a QR reader) and compares it byte-for-byte with what we meant to encode.
+  // Resolves to true (scans), false (doesn't scan) or null (checker unavailable).
+  function verifyScannable(blob, expected) {
+    if (typeof window.jsQR !== 'function') return Promise.resolve(null);
+    return new Promise(function (resolve) {
+      var url = URL.createObjectURL(blob);
+      var img = new Image();
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        try {
+          var side = img.naturalWidth;
+          var canvas = document.createElement('canvas');
+          canvas.width = canvas.height = side;
+          var ctx = canvas.getContext('2d', { willReadFrequently: true });
+          ctx.drawImage(img, 0, 0);
+          var found = window.jsQR(ctx.getImageData(0, 0, side, side).data, side, side);
+          if (!found) return resolve(false);
+          var bytes = found.binaryData, text = '';
+          for (var i = 0; i < bytes.length; i++) text += String.fromCharCode(bytes[i]);
+          resolve(text === expected);
+        } catch (err) {
+          resolve(null);
+        }
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); resolve(null); };
+      img.src = url;
+    });
+  }
+
+
+  /* =========================================================
+     7. UPDATING THE PREVIEW UI
+     ========================================================= */
+
+  var STAGE_ICONS = { empty: '#i-qr', invalid: '#i-alert', overflow: '#i-alert', error: '#i-alert' };
+
+  // Shows a message in the preview area (empty, invalid, overflow or error) and disables export.
+  function showStage(kind, title, text) {
+    var stage = $('stage');
+    stage.dataset.state = kind;
+    $('stage-title').textContent = title;
+    $('stage-text').textContent = text;
+    $('stage-icon').firstElementChild.setAttribute('href', STAGE_ICONS[kind] || '#i-qr');
+    if (kind !== 'overflow') $('meta').hidden = true;
+    $('scan-check').hidden = true;
+    // Don't leave size details from the previous code on screen.
+    $('size-chip').textContent = state.design.size + ' × ' + state.design.size;
+    $('png-size').textContent = state.design.size + ' px';  // shown left-to-right next to "تحميل PNG"
+    updateSizeMessages(null);
+    state.current = null;
+    setActionsEnabled(false);
+  }
+
+  // Puts the freshly drawn PNG into the preview <img> (which also allows right-click / long-press save).
+  function showPreviewImage(blob, alt, size) {
+    var img = $('qr-img');
+    var oldUrl = state.previewUrl;
+    state.previewUrl = URL.createObjectURL(blob);
+    img.onload = function () { if (oldUrl) URL.revokeObjectURL(oldUrl); };
+    img.src = state.previewUrl;
+    img.alt = alt;
+    img.classList.toggle('is-pixelated', size < 340);
+    $('stage').dataset.state = 'ready';
+    $('meta').hidden = false;
+    $('size-chip').textContent = size + ' × ' + size;
+    $('png-size').textContent = size + ' px';
+    setActionsEnabled(true);
+  }
+
+  function setActionsEnabled(enabled) {
+    ['btn-png', 'btn-svg', 'btn-copy', 'btn-save'].forEach(function (id) { $(id).disabled = !enabled; });
+    if (!enabled) $('copy-note').hidden = true;
+  }
+
+  // Version, module count and how full the code is.
+  function updateMeta(encoded, capacity, ecc) {
+    var unit = encoded.isAscii ? 'حرف' : 'بايت';
+    var pct = Math.min(100, Math.round(encoded.used / capacity.limit * 100));
+    $('meta').hidden = false;
+    $('meta-version').textContent = capacity.fits
+      ? 'الإصدار ' + capacity.version + ' · ' + ltr(capacity.count + ' × ' + capacity.count) + ' وحدة'
+      : 'أكبر من الحد الأقصى (الإصدار 40)';
+    $('meta-ecc').textContent = 'تصحيح الأخطاء ' + ecc;
+    $('meta-count').textContent = ltr(formatNumber(encoded.used) + ' / ' + formatNumber(capacity.limit)) + ' ' + unit;
+    var meter = $('meter');
+    meter.firstElementChild.style.width = pct + '%';
+    meter.setAttribute('aria-valuenow', String(pct));
+    meter.classList.toggle('is-high', pct >= 75 && capacity.fits);
+    meter.classList.toggle('is-full', !capacity.fits);
+  }
+
+  // Shows the per-field hints, warnings and errors returned by the builders.
+  function showFieldMessages(messages) {
+    var panel = $('panel-' + state.type);
+    panel.querySelectorAll('.field-msg[id]').forEach(function (msg) {
+      var fieldId = msg.id.replace(/-msg$/, '');
+      var m = messages[fieldId];
+      var text = m ? m.text : (msg.dataset.hint || '');
+      msg.textContent = text;
+      msg.className = 'field-msg' + (m ? ' is-' + m.kind : '');
+      msg.hidden = !text;
+      var input = $(fieldId);
+      if (input) {
+        if (m && m.kind === 'error') input.setAttribute('aria-invalid', 'true');
+        else input.removeAttribute('aria-invalid');
+      }
+    });
+  }
+
+  // Hints under the size and margin sliders.
+  function updateSizeMessages(geo) {
+    var sizeMsg = $('size-msg');
+    var d = state.design;
+    if (geo && geo.enlarged) {
+      sizeMsg.className = 'field-msg is-warn';
+      sizeMsg.textContent = 'هالمحتوى يحتاج ' + geo.size + ' بكسل على الأقل، عشان كذا بنصدّر الصورة بمقاس ' + geo.size + ' بكسل.';
+    } else {
+      var size = geo ? geo.size : d.size;
+      sizeMsg.className = 'field-msg';
+      sizeMsg.textContent = 'تطلع واضحة بالطباعة لين عرض ' + (size / 300 * 2.54).toFixed(1) + ' سم تقريبًا (بدقة 300 dpi).';
+    }
+    var marginMsg = $('margin-msg');
+    if (d.margin < 4) {
+      marginMsg.className = 'field-msg is-warn';
+      marginMsg.textContent = 'المعيار 4. الهامش الأصغر ممكن يخرّب المسح لو حول الكود ألوان أو زحمة.';
+    } else {
+      marginMsg.className = 'field-msg';
+      marginMsg.textContent = 'المساحة الفاضية اللي تحتاجها الماسحات عشان تلقى الكود. المعيار 4.';
+    }
+  }
+
+
+  /* =========================================================
+     8. COLORS AND CONTRAST
+     ========================================================= */
+
+  // Relative luminance from the WCAG formula (0 = black, 1 = white).
+  function luminance(hex) {
+    var rgb = [1, 3, 5].map(function (i) {
+      var c = parseInt(hex.substr(i, 2), 16) / 255;
+      return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+  }
+
+  function contrastRatio(a, b) {
+    var la = luminance(a), lb = luminance(b);
+    return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+  }
+
+  function updateContrastNote() {
+    var fg = state.design.fg, bg = state.design.bg;
+    var ratio = contrastRatio(fg, bg);
+    var note = $('contrast-note');
+    var text, kind;
+    if (ratio < 4) {
+      kind = 'warn';
+      text = 'التباين ضعيف (' + ltr(ratio.toFixed(1) + ':1') + '). الماسحات تحتاج فرق واضح — خلّه ' + ltr('4:1') + ' على الأقل بتغميق الكود أو تفتيح الخلفية.';
+    } else if (luminance(fg) > luminance(bg)) {
+      kind = 'warn';
+      text = 'كود فاتح على خلفية غامقة (' + ltr(ratio.toFixed(1) + ':1') + '). بعض الماسحات ما تقرأ الأكواد المعكوسة — جرّبه قبل الطباعة.';
+    } else {
+      kind = 'ok';
+      text = 'التباين ' + ltr(ratio.toFixed(1) + ':1') + ' — ينمسح بسهولة.';
+    }
+    note.className = 'notice is-' + kind;
+    note.querySelector('use').setAttribute('href', kind === 'ok' ? '#i-check' : '#i-alert');
+    note.querySelector('span').textContent = text;
+  }
+
+  // Keeps the color picker and its hex text box in sync.
+  function bindColorControl(key, pickerId, hexId) {
+    var picker = $(pickerId), hex = $(hexId);
+    picker.addEventListener('input', function () {
+      hex.value = picker.value;
+      setDesign(key, picker.value.toLowerCase());
+    });
+    hex.addEventListener('input', function () {
+      // Apply as soon as the box holds a complete 3- or 6-digit hex color.
+      var v = normalizeHex(hex.value);
+      if (v) {
+        picker.value = v;
+        setDesign(key, v);
+      }
+    });
+    hex.addEventListener('blur', function () {
+      // Tidy up the text box, or restore the last valid color if what's typed isn't one.
+      var v = normalizeHex(hex.value);
+      hex.value = v || state.design[key];
+      if (v && v !== state.design[key]) { picker.value = v; setDesign(key, v); }
+    });
+  }
+
+
+  /* =========================================================
+     9. LOGO UPLOAD
+     ========================================================= */
+
+  function readFileAsDataUrl(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () { resolve(reader.result); };
+      reader.onerror = function () { reject(new Error('read')); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function loadImage(src) {
+    return new Promise(function (resolve, reject) {
+      var img = new Image();
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { reject(new Error('decode')); };
+      img.src = src;
+    });
+  }
+
+  // Redraws the logo onto a canvas at most 512 px wide. This keeps files small, makes saving it
+  // possible, and guarantees the drawing library gets an image with real width and height.
+  function normalizeLogo(img) {
+    var w = img.naturalWidth || LOGO_MAX_SIDE;
+    var h = img.naturalHeight || LOGO_MAX_SIDE;
+    var scale = Math.min(1, LOGO_MAX_SIDE / Math.max(w, h));
+    var canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(w * scale));
+    canvas.height = Math.max(1, Math.round(h * scale));
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/png');
+  }
+
+  function showLogoError(text) {
+    var msg = $('logo-msg');
+    msg.textContent = text;
+    msg.hidden = !text;
+  }
+
+  function handleLogoFile(file) {
+    showLogoError('');
+    if (!file) return;
+    if (!/^image\/(png|jpeg|webp|gif|svg\+xml)$/.test(file.type)) {
+      return showLogoError('اختر صورة PNG أو JPG أو SVG أو WebP أو GIF.');
+    }
+    if (file.size > MAX_LOGO_FILE) {
+      return showLogoError('الصورة أكبر من 10 ميقا. اختر ملف أصغر.');
+    }
+    readFileAsDataUrl(file)
+      .then(loadImage)
+      .then(function (img) {
+        setLogo({ dataUrl: normalizeLogo(img), name: file.name });
+      })
+      .catch(function () {
+        showLogoError('ما قدرنا نقرأ الصورة. جرّب ملف ثاني.');
+      });
+  }
+
+  function setLogo(logo) {
+    state.logo = logo;
+    updateLogoUi();
+    scheduleRender(0);
+  }
+
+  function updateLogoUi() {
+    var has = !!state.logo;
+    $('logo-settings').hidden = !has;
+    $('logo-cta').textContent = has ? 'غيّر الشعار' : 'ارفع شعارك';
+    if (has) {
+      $('logo-thumb').src = state.logo.dataUrl;
+      $('logo-name').textContent = state.logo.name || 'الشعار';
+    } else {
+      $('logo-input').value = '';
+    }
+    // Lock error correction to H while a logo is present.
+    document.querySelectorAll('input[name="ecc"]').forEach(function (r) { r.disabled = has; });
+    setRadio('ecc', has ? 'H' : state.design.ecc);
+    $('ecc-lock-note').hidden = !has;
+    updateLogoSizeLabel();
+  }
+
+  // The library hides at most (logo size × 30%) of the modules, so the largest setting (0.5) covers ≤ 15%.
+  function logoAreaPercent(logoSize) {
+    return Math.round(logoSize * ECC_RECOVERY.H * 100);
+  }
+
+  function updateLogoSizeLabel() {
+    $('logo-size-out').textContent = 'لين ' + logoAreaPercent(state.design.logoSize) + '% من الكود';
+  }
+
+  // Result of the read-back check, plus a note if the logo had to be shrunk.
+  function showScanCheck(verified, plan) {
+    var el = $('scan-check');
+    el.hidden = verified === null;   // null = checker not available
+    if (verified !== null) {
+      el.className = 'scan-check is-' + (verified ? 'ok' : 'warn');
+      el.querySelector('use').setAttribute('href', verified ? '#i-check' : '#i-alert');
+      el.querySelector('span').textContent = verified
+        ? 'نجح اختبار المسح'
+        : 'اختبار المسح ما قدر يقرأ هالتصميم. جرّب تباين أعلى، أو هامش أكبر، ' + (state.logo ? 'أو شيل الشعار.' : 'أو نقاط مربعة.');
+    }
+    var logoMsg = $('logo-size-msg');
+    if (state.logo && plan.logoSize < state.design.logoSize - 0.001) {
+      logoMsg.className = 'field-msg is-warn';
+      logoMsg.textContent = 'صغّرناه إلى ' + logoAreaPercent(plan.logoSize) + '% من الكود مع هالمحتوى، عشان يبقى ينمسح.';
+    } else {
+      logoMsg.className = 'field-msg';
+      logoMsg.textContent = 'نختبر كل كود بعد ما نرسمه، ولو الشعار بيخرّب المسح نصغّره تلقائيًا.';
+    }
+  }
+
+
+  /* =========================================================
+     10. EXPORT: DOWNLOAD AND COPY
+     ========================================================= */
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 10000);
+  }
+
+  function downloadPng() {
+    if (!state.current) return;
+    downloadBlob(state.current.blob, currentFileBase() + '.png');
+    toast('نزّلنا ملف PNG');
+  }
+
+  // SVG is drawn separately so it stays a crisp vector file.
+  function downloadSvg() {
+    var cur = state.current;
+    if (!cur) return;
+    var qr = new QRCodeStyling(buildStylingOptions(cur.encoded, cur.ecc, cur.geo, cur.plan, 'svg', 'styled'));
+    qr.getRawData('svg').then(function (blob) {
+      if (!blob) throw new Error('empty');
+      downloadBlob(blob, currentFileBase() + '.svg');
+      toast('نزّلنا ملف SVG');
+    }).catch(function () {
+      toast('ما قدرنا نسوي ملف SVG. جرّب مرة ثانية.');
+    });
+  }
+
+  function copyImage() {
+    var cur = state.current;
+    if (!cur) return;
+    var supported = window.isSecureContext && navigator.clipboard &&
+      typeof navigator.clipboard.write === 'function' && typeof window.ClipboardItem === 'function';
+    if (!supported) return showCopyFallback('متصفحك ما يدعم نسخ الصور.');
+    try {
+      navigator.clipboard.write([new ClipboardItem({ 'image/png': cur.blob })])
+        .then(function () {
+          $('copy-note').hidden = true;
+          toast('نسخنا الصورة');
+        })
+        .catch(function () { showCopyFallback('متصفحك منع نسخ الصورة.'); });
+    } catch (err) {
+      showCopyFallback('متصفحك ما يدعم نسخ الصور.');
+    }
+  }
+
+  function showCopyFallback(reason) {
+    var note = $('copy-note');
+    note.textContent = reason + ' اضغط بالزر اليمين (أو اضغط مطوّل بالجوال) على المعاينة واختر «نسخ الصورة»، أو استخدم «تحميل PNG».';
+    note.hidden = false;
+  }
+
+  function toast(message) {
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('is-visible');
+    clearTimeout(state.toastTimer);
+    state.toastTimer = setTimeout(function () { el.classList.remove('is-visible'); }, 2400);
+  }
+
+
+  /* =========================================================
+     11. SAVING SETTINGS (localStorage)
+     Every read/write is wrapped in try/catch: storage can be disabled
+     (private mode, strict privacy settings) or full.
+     ========================================================= */
+
+  // Reads every content field. The Wi-Fi password is only included when saving a code into a
+  // profile (includeSecrets), never in the automatic "last settings" memory.
+  function collectFields(includeSecrets) {
+    var fields = {};
+    document.querySelectorAll('[data-persist]').forEach(function (el) {
+      fields[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+    });
+    fields['wifi-security'] = radioValue('wifi-security');
+    if (includeSecrets) fields['wifi-password'] = $('wifi-password').value;
+    return fields;
+  }
+
+  // Puts saved field values back into the form (missing values become empty).
+  function applyFields(fields) {
+    fields = fields || {};
+    document.querySelectorAll('[data-persist]').forEach(function (el) {
+      var v = fields[el.id];
+      if (el.type === 'checkbox') el.checked = v === true;
+      else el.value = typeof v === 'string' ? v : '';
+    });
+    var sec = fields['wifi-security'];
+    setRadio('wifi-security', ['WPA', 'WEP', 'nopass'].indexOf(sec) !== -1 ? sec : 'WPA');
+    $('wifi-password').value = typeof fields['wifi-password'] === 'string' ? fields['wifi-password'] : '';
+    updateWifiPasswordVisibility();
+  }
+
+  function saveSettings() {
+    var payload = { type: state.type, design: state.design, fields: collectFields(), logo: state.logo };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (err) {
+      // Probably out of space because of the logo: save everything else.
+      try {
+        payload.logo = null;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (err2) { /* storage unavailable; the app still works, it just won't remember */ }
+    }
+  }
+
+  function loadSettings() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // Only accept saved values that make sense, so old or corrupted data can't break the page.
+  function sanitizeDesign(saved) {
+    var d = copy(DEFAULT_DESIGN);
+    if (!saved || typeof saved !== 'object') return d;
+    if (isHexColor(saved.fg)) d.fg = saved.fg.toLowerCase();
+    if (isHexColor(saved.bg)) d.bg = saved.bg.toLowerCase();
+    if (typeof saved.size === 'number') d.size = clamp(Math.round(saved.size / 32) * 32, 128, 1024);
+    if (typeof saved.margin === 'number') d.margin = clamp(Math.round(saved.margin), 0, 10);
+    if (ECC_LEVELS.indexOf(saved.ecc) !== -1) d.ecc = saved.ecc;
+    if (DOT_TYPES.indexOf(saved.dotType) !== -1) d.dotType = saved.dotType;
+    if (CORNER_SQUARE_TYPES.indexOf(saved.cornerSquare) !== -1) d.cornerSquare = saved.cornerSquare;
+    if (CORNER_DOT_TYPES.indexOf(saved.cornerDot) !== -1) d.cornerDot = saved.cornerDot;
+    if (typeof saved.logoSize === 'number') d.logoSize = clamp(Math.round(saved.logoSize * 20) / 20, LOGO_MIN_SIZE, 0.5);
+    return d;
+  }
+
+  function restoreSettings() {
+    var saved = loadSettings();
+    if (!saved) return;
+    state.design = sanitizeDesign(saved.design);
+    if (TYPES.indexOf(saved.type) !== -1) state.type = saved.type;
+    if (saved.fields && typeof saved.fields === 'object') {
+      document.querySelectorAll('[data-persist]').forEach(function (el) {
+        var v = saved.fields[el.id];
+        if (el.type === 'checkbox') el.checked = v === true;
+        else if (typeof v === 'string') el.value = v;
+      });
+      if (['WPA', 'WEP', 'nopass'].indexOf(saved.fields['wifi-security']) !== -1) {
+        setRadio('wifi-security', saved.fields['wifi-security']);
+      }
+    }
+    if (saved.logo && typeof saved.logo.dataUrl === 'string' && saved.logo.dataUrl.indexOf('data:image/') === 0) {
+      state.logo = { dataUrl: saved.logo.dataUrl, name: String(saved.logo.name || 'الشعار') };
+    }
+  }
+
+
+  /* =========================================================
+     12. DESIGN CONTROLS
+     ========================================================= */
+
+  function setDesign(key, value) {
+    state.design[key] = value;
+    updateDesignReadouts();
+    scheduleRender(DESIGN_DELAY);
+  }
+
+  // Copies state.design into every control (used at start-up and after Reset).
+  function syncDesignControls() {
+    var d = state.design;
+    $('fg-picker').value = d.fg; $('fg-hex').value = d.fg;
+    $('bg-picker').value = d.bg; $('bg-hex').value = d.bg;
+    $('size-range').value = d.size;
+    $('margin-range').value = d.margin;
+    $('logo-size-range').value = d.logoSize;
+    setRadio('dot-type', d.dotType);
+    setRadio('corner-square', d.cornerSquare);
+    setRadio('corner-dot', d.cornerDot);
+    updateLogoUi();   // also sets the error-correction radios
+    updateDesignReadouts();
+  }
+
+  function updateDesignReadouts() {
+    var d = state.design;
+    $('size-out').textContent = d.size + ' بكسل';
+    // Arabic plural: 3–10 take "وحدات", everything else "وحدة"
+    $('margin-out').textContent = d.margin + (d.margin >= 3 && d.margin <= 10 ? ' وحدات' : ' وحدة');
+    updateLogoSizeLabel();
+    updateContrastNote();
+    updateSizeMessages(null);   // the next render refines this once the module count is known
+  }
+
+
+  /* =========================================================
+     13. TABS (WAI-ARIA tabs pattern)
+     Click or use arrow keys / Home / End to switch content type.
+     ========================================================= */
+
+  function activateTab(type, moveFocus) {
+    state.type = type;
+    document.querySelectorAll('[role="tab"]').forEach(function (tab) {
+      var selected = tab.dataset.type === type;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+      if (selected && moveFocus) tab.focus();
+      $(tab.getAttribute('aria-controls')).hidden = !selected;
+    });
+    updateWifiPasswordVisibility();
+  }
+
+  function onTabKeydown(event) {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+    var index = tabs.indexOf(event.target);
+    if (index === -1) return;
+    var next = null;
+    // In a right-to-left page the next tab is to the LEFT, so the arrow keys swap meaning.
+    var rtl = document.documentElement.dir === 'rtl';
+    var nextKey = rtl ? 'ArrowLeft' : 'ArrowRight';
+    var prevKey = rtl ? 'ArrowRight' : 'ArrowLeft';
+    if (event.key === nextKey || event.key === 'ArrowDown') next = (index + 1) % tabs.length;
+    else if (event.key === prevKey || event.key === 'ArrowUp') next = (index - 1 + tabs.length) % tabs.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = tabs.length - 1;
+    if (next === null) return;
+    event.preventDefault();
+    activateTab(tabs[next].dataset.type, true);
+    scheduleRender(0);
+  }
+
+  function updateWifiPasswordVisibility() {
+    $('wifi-password-field').hidden = radioValue('wifi-security') === 'nopass';
+  }
+
+
+  /* =========================================================
+     14. EVENT WIRING
+     ========================================================= */
+
+  function bindEvents() {
+    // Tabs
+    document.querySelectorAll('[role="tab"]').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        activateTab(tab.dataset.type, false);
+        scheduleRender(0);
+      });
+      tab.addEventListener('keydown', onTabKeydown);
+    });
+
+    // Any typing in the content card redraws after a short pause.
+    $('content-card').addEventListener('input', function () { scheduleRender(TYPING_DELAY); });
+    $('content-card').addEventListener('change', function (e) {
+      if (e.target.name === 'wifi-security') updateWifiPasswordVisibility();
+      scheduleRender(0);
+    });
+
+    // Show / hide the Wi-Fi password
+    $('wifi-password-toggle').addEventListener('click', function () {
+      var input = $('wifi-password');
+      var show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      this.setAttribute('aria-pressed', String(show));
+      this.setAttribute('aria-label', show ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور');
+      this.querySelector('use').setAttribute('href', show ? '#i-eye-off' : '#i-eye');
+    });
+
+    // Colors
+    bindColorControl('fg', 'fg-picker', 'fg-hex');
+    bindColorControl('bg', 'bg-picker', 'bg-hex');
+    $('btn-swap').addEventListener('click', function () {
+      var d = state.design, fg = d.fg;
+      d.fg = d.bg; d.bg = fg;
+      syncDesignControls();
+      scheduleRender(0);
+    });
+
+    // Style radios
+    [['dot-type', 'dotType'], ['corner-square', 'cornerSquare'], ['corner-dot', 'cornerDot'], ['ecc', 'ecc']].forEach(function (pair) {
+      document.querySelectorAll('input[name="' + pair[0] + '"]').forEach(function (radio) {
+        radio.addEventListener('change', function () { if (radio.checked) setDesign(pair[1], radio.value); });
+      });
+    });
+
+    // Sliders
+    $('size-range').addEventListener('input', function () { setDesign('size', Number(this.value)); });
+    $('margin-range').addEventListener('input', function () { setDesign('margin', Number(this.value)); });
+    $('logo-size-range').addEventListener('input', function () { setDesign('logoSize', Number(this.value)); });
+
+    // Logo: file picker, drag & drop, remove
+    $('logo-input').addEventListener('change', function () { handleLogoFile(this.files && this.files[0]); });
+    var drop = $('logo-drop');
+    ['dragenter', 'dragover'].forEach(function (name) {
+      drop.addEventListener(name, function (e) { e.preventDefault(); drop.classList.add('is-dragging'); });
+    });
+    ['dragleave', 'drop'].forEach(function (name) {
+      drop.addEventListener(name, function (e) { e.preventDefault(); drop.classList.remove('is-dragging'); });
+    });
+    drop.addEventListener('drop', function (e) {
+      var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      handleLogoFile(file);
+    });
+    $('logo-remove').addEventListener('click', function () {
+      setLogo(null);
+      $('logo-input').focus();
+    });
+
+    // Reset all design settings (content and logo are kept)
+    $('btn-reset').addEventListener('click', function () {
+      state.design = copy(DEFAULT_DESIGN);
+      syncDesignControls();
+      scheduleRender(0);
+      toast('رجّعنا التصميم الأصلي');
+    });
+
+    // Export
+    $('btn-png').addEventListener('click', downloadPng);
+    $('btn-svg').addEventListener('click', downloadSvg);
+    $('btn-copy').addEventListener('click', copyImage);
+  }
+
+
+  /* =========================================================
+     15. PROFILES — DATA STORAGE
+     A profile is a company, a person, or anything else. Each saved QR code
+     belongs to exactly one profile. Everything stays in this browser:
+     IndexedDB when available (lots of room for logos and images),
+     otherwise localStorage.
+     ========================================================= */
+
+  var PROFILE_KINDS = { company: 'شركة', person: 'فرد', other: 'جهة أخرى' };
+  var TYPE_NAMES = { url: 'رابط', text: 'نص', wifi: 'واي فاي', vcard: 'جهة اتصال', email: 'إيميل', phone: 'اتصال', sms: 'رسالة' };
+  var AVATAR_COLORS = ['#4f46e5', '#0e7490', '#b45309', '#be123c', '#15803d', '#7c3aed', '#0369a1', '#a21caf'];
+
+  // All profiles and codes, kept in memory; the store below writes changes to disk.
+  var data = { profiles: [], codes: [] };
+
+  var store = (function () {
+    var DB_NAME = 'quietzone-profiles';
+    var LS_KEY = 'quietzone.profiles.v1';
+    var db = null;
+
+    function openDb() {
+      return new Promise(function (resolve) {
+        try {
+          if (!window.indexedDB) return resolve(null);
+          var req = indexedDB.open(DB_NAME, 1);
+          req.onupgradeneeded = function () {
+            var d = req.result;
+            if (!d.objectStoreNames.contains('profiles')) d.createObjectStore('profiles', { keyPath: 'id' });
+            if (!d.objectStoreNames.contains('codes')) d.createObjectStore('codes', { keyPath: 'id' });
+          };
+          req.onsuccess = function () { resolve(req.result); };
+          req.onerror = function (e) { if (e && e.preventDefault) e.preventDefault(); resolve(null); };
+          req.onblocked = function () { resolve(null); };
+        } catch (err) {
+          resolve(null);   // e.g. storage blocked by privacy settings
+        }
+      });
+    }
+
+    function readAll(name) {
+      return new Promise(function (resolve, reject) {
+        var req = db.transaction(name, 'readonly').objectStore(name).getAll();
+        req.onsuccess = function () { resolve(req.result || []); };
+        req.onerror = function (e) { e.preventDefault(); reject(req.error); };
+      });
+    }
+
+    function write(name, action) {
+      return new Promise(function (resolve, reject) {
+        var tx = db.transaction(name, 'readwrite');
+        action(tx.objectStore(name));
+        tx.oncomplete = function () { resolve(); };
+        tx.onerror = function (e) { e.preventDefault(); reject(tx.error); };
+        tx.onabort = function () { reject(tx.error); };
+      });
+    }
+
+    function saveLocal() {
+      try {
+        localStorage.setItem(LS_KEY, JSON.stringify(data));
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject(err);   // usually "storage full"
+      }
+    }
+
+    // Runs a change in memory, then on disk. If the disk write fails, the memory change is undone.
+    function change(kind, mutate, persist) {
+      var before = data[kind].slice();
+      mutate();
+      return persist().catch(function (err) {
+        data[kind] = before;
+        throw err;
+      });
+    }
+
+    return {
+      load: function () {
+        return openDb().then(function (opened) {
+          db = opened;
+          if (db) {
+            return Promise.all([readAll('profiles'), readAll('codes')]).then(function (r) {
+              data.profiles = r[0];
+              data.codes = r[1];
+            });
+          }
+          try {
+            var parsed = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
+            if (parsed && Array.isArray(parsed.profiles) && Array.isArray(parsed.codes)) {
+              data.profiles = parsed.profiles;
+              data.codes = parsed.codes;
+            }
+          } catch (err) { /* nothing saved yet, or unreadable */ }
+        }).catch(function () { db = null; });
+      },
+      // kind is 'profiles' or 'codes'
+      put: function (kind, record) {
+        return change(kind, function () {
+          var list = data[kind];
+          var i = list.findIndex(function (r) { return r.id === record.id; });
+          if (i === -1) list.push(record); else list[i] = record;
+        }, function () {
+          return db ? write(kind, function (s) { s.put(record); }) : saveLocal();
+        });
+      },
+      remove: function (kind, ids) {
+        if (!ids.length) return Promise.resolve();
+        return change(kind, function () {
+          data[kind] = data[kind].filter(function (r) { return ids.indexOf(r.id) === -1; });
+        }, function () {
+          return db ? write(kind, function (s) { ids.forEach(function (id) { s.delete(id); }); }) : saveLocal();
+        });
+      }
+    };
+  })();
+
+
+  /* =========================================================
+     16. PROFILES — HELPERS
+     ========================================================= */
+
+  function newId() {
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (err) { /* fall through */ }
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  }
+
+  function profileById(id) { return data.profiles.find(function (p) { return p.id === id; }) || null; }
+  function codeById(id) { return data.codes.find(function (c) { return c.id === id; }) || null; }
+
+  // A profile's codes, newest first.
+  function codesOf(profileId) {
+    return data.codes
+      .filter(function (c) { return c.profileId === profileId; })
+      .sort(function (a, b) { return b.updatedAt - a.updatedAt; });
+  }
+
+  // Each profile gets a steady color, worked out from its id.
+  function avatarColor(id) {
+    var sum = 0;
+    for (var i = 0; i < id.length; i++) sum += id.charCodeAt(i);
+    return AVATAR_COLORS[sum % AVATAR_COLORS.length];
+  }
+
+  function initial(name) { return Array.from(String(name || '').trim())[0] || '؟'; }
+
+  // Arabic counting: "كود واحد"، "كودين"، "3 أكواد"، "11 كود"
+  function codesLabel(n) {
+    if (n === 0) return 'ما فيه أكواد';
+    if (n === 1) return 'كود واحد';
+    if (n === 2) return 'كودين';
+    if (n <= 10) return n + ' أكواد';
+    return n + ' كود';
+  }
+
+  function formatDate(ts) {
+    try {
+      return new Date(ts).toLocaleDateString('ar-SA-u-ca-gregory-nu-latn', { year: 'numeric', month: 'short', day: 'numeric' });
+    } catch (err) {
+      return new Date(ts).toISOString().slice(0, 10);
+    }
+  }
+
+  // Small helper to build elements safely (text is never parsed as HTML).
+  function el(tag, props, children) {
+    var node = document.createElement(tag);
+    Object.keys(props || {}).forEach(function (key) {
+      var v = props[key];
+      if (v === null || v === undefined || v === false) return;
+      if (key === 'text') node.textContent = v;
+      else if (key === 'class') node.className = v;
+      else node.setAttribute(key, v);
+    });
+    (children || []).forEach(function (child) {
+      if (child) node.appendChild(typeof child === 'string' ? document.createTextNode(child) : child);
+    });
+    return node;
+  }
+
+  function icon(name, size) {
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('width', size || 16);
+    svg.setAttribute('height', size || 16);
+    svg.setAttribute('aria-hidden', 'true');
+    var use = document.createElementNS(ns, 'use');
+    use.setAttribute('href', '#' + name);
+    svg.appendChild(use);
+    return svg;
+  }
+
+  function paintAvatar(node, profile) {
+    node.textContent = initial(profile.name);
+    node.style.background = avatarColor(profile.id);
+  }
+
+  function avatarEl(profile) {
+    var a = el('span', { class: 'avatar', 'aria-hidden': 'true' });
+    paintAvatar(a, profile);
+    return a;
+  }
+
+  function blobToDataUrl(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () { resolve(reader.result); };
+      reader.onerror = function () { reject(new Error('read')); };
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  function dataUrlToBlob(url) {
+    var parts = url.split(',');
+    var mime = (parts[0].match(/:(.*?);/) || [])[1] || 'image/png';
+    var bin = atob(parts[1]);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+
+  // A short description of what's in the code, shown on its card.
+  function summaryFor(type) {
+    var v = function (id) { return $(id).value.trim(); };
+    switch (type) {
+      case 'url': return v('url-input');
+      case 'text': return v('text-input').slice(0, 120);
+      case 'wifi': return 'الشبكة: ' + $('wifi-ssid').value;
+      case 'vcard': return [v('vc-first'), v('vc-last')].filter(Boolean).join(' ') || v('vc-org');
+      case 'email': return v('email-to');
+      case 'phone': return v('phone-number');
+      case 'sms': return v('sms-number');
+    }
+    return '';
+  }
+
+  // File names that say whose code it is, e.g. "مخبز-السعادة-منيو-الفرع.png"
+  function currentFileBase() {
+    var editingCode = state.editing && codeById(state.editing.codeId);
+    if (editingCode) {
+      var owner = profileById(editingCode.profileId);
+      return slugify((owner ? owner.name + ' ' : '') + editingCode.name) || 'qr';
+    }
+    var target = state.targetProfileId && profileById(state.targetProfileId);
+    if (target) return slugify(target.name + ' ' + TYPE_NAMES[state.type]) || 'qr';
+    return state.current ? state.current.filename : 'qr';
+  }
+
+  function showFormError(id, message, focusId) {
+    var msg = $(id);
+    msg.textContent = message || '';
+    msg.hidden = !message;
+    if (focusId) $(focusId).focus();
+  }
+
+
+  /* =========================================================
+     17. PROFILES — PAGES
+     Simple page switching with the address bar:
+       #/              → the generator
+       #/profiles      → all profiles
+       #/profiles/<id> → one profile and its codes
+     ========================================================= */
+
+  var dataReady = false;   // set once saved profiles have loaded
+
+  function route(fromUser) {
+    if (!dataReady) return;  // start-up calls route() again as soon as the data is ready
+    var hash = location.hash || '';
+    var match = hash.match(/^#\/profiles\/([^/]+)$/);
+    var view = match ? 'profile' : (hash === '#/profiles' ? 'profiles' : 'generator');
+
+    if (view === 'profile' && !profileById(decodeURIComponent(match[1]))) {
+      location.replace('#/profiles');   // profile was deleted or the link is wrong
+      return;
+    }
+    $('view-generator').hidden = view !== 'generator';
+    $('view-profiles').hidden = view !== 'profiles';
+    $('view-profile').hidden = view !== 'profile';
+    if (view === 'generator') $('nav-generator').setAttribute('aria-current', 'page');
+    else $('nav-generator').removeAttribute('aria-current');
+    if (view !== 'generator') $('nav-profiles').setAttribute('aria-current', 'page');
+    else $('nav-profiles').removeAttribute('aria-current');
+
+    var heading = null;
+    if (view === 'profiles') {
+      renderProfilesView();
+      document.title = 'الملفات · Quiet Zone';
+      heading = $('profiles-heading');
+    } else if (view === 'profile') {
+      renderProfileView(decodeURIComponent(match[1]));
+      heading = $('pv-name');
+    } else {
+      document.title = 'Quiet Zone · مولّد رموز QR';
+    }
+    if (fromUser) {
+      window.scrollTo(0, 0);
+      if (heading) heading.focus({ preventScroll: true });   // tells screen readers the page changed
+    }
+  }
+
+  // Re-draws whatever is on screen after data changes.
+  function refreshViews() {
+    $('nav-count').textContent = String(data.profiles.length);
+    if (!$('view-profiles').hidden) renderProfilesView();
+    if (!$('view-profile').hidden && state.viewProfileId) {
+      if (profileById(state.viewProfileId)) renderProfileView(state.viewProfileId);
+      else location.replace('#/profiles');
+    }
+    updateContextBar();
+  }
+
+  // ---- All profiles ----
+  function codeMatches(code, q) {
+    return (code.name + ' ' + (code.summary || '')).toLowerCase().indexOf(q) !== -1;
+  }
+
+  function renderProfilesView() {
+    var q = $('profile-search').value.trim().toLowerCase();
+    var list = $('profile-list');
+    list.textContent = '';
+    var shown = data.profiles
+      .slice()
+      .sort(function (a, b) { return b.updatedAt - a.updatedAt; })
+      .filter(function (p) {
+        if (!q) return true;
+        var own = [p.name, p.phone, p.email, p.notes].join(' ').toLowerCase().indexOf(q) !== -1;
+        return own || codesOf(p.id).some(function (c) { return codeMatches(c, q); });
+      });
+
+    shown.forEach(function (p) {
+      var codes = codesOf(p.id);
+      var body = el('span', { class: 'pc-body' }, [
+        el('span', { class: 'pc-name', text: p.name }),
+        el('span', { class: 'pc-meta' }, [
+          el('span', { class: 'badge', text: PROFILE_KINDS[p.kind] || PROFILE_KINDS.other }),
+          el('span', { text: codesLabel(codes.length) })
+        ])
+      ]);
+      if (q) {
+        var hits = codes.filter(function (c) { return codeMatches(c, q); }).map(function (c) { return c.name; });
+        if (hits.length) body.appendChild(el('span', { class: 'pc-hit', text: 'فيه: ' + hits.slice(0, 3).join('، ') }));
+      }
+      list.appendChild(el('a', { class: 'profile-card', href: '#/profiles/' + encodeURIComponent(p.id) }, [avatarEl(p), body]));
+    });
+
+    var none = data.profiles.length === 0;
+    $('profiles-empty').hidden = !none;
+    list.hidden = none;
+    $('profiles-noresults').hidden = none || shown.length > 0;
+  }
+
+  // ---- One profile ----
+  function renderProfileView(id) {
+    var p = profileById(id);
+    if (!p) return;
+    state.viewProfileId = id;
+    paintAvatar($('pv-avatar'), p);
+    $('pv-name').textContent = p.name;
+    $('pv-kind').textContent = PROFILE_KINDS[p.kind] || PROFILE_KINDS.other;
+    var codes = codesOf(id);
+    $('pv-count').textContent = codesLabel(codes.length);
+    document.title = p.name + ' · Quiet Zone';
+
+    var info = $('pv-info');
+    info.textContent = '';
+    if (p.phone) info.appendChild(el('span', {}, [icon('i-phone', 14), el('span', { dir: 'ltr', text: p.phone })]));
+    if (p.email) info.appendChild(el('span', {}, [icon('i-mail', 14), el('span', { dir: 'ltr', text: p.email })]));
+    if (p.notes) info.appendChild(el('span', { class: 'pv-notes', dir: 'auto', text: p.notes }));
+    info.hidden = !info.childNodes.length;
+
+    var grid = $('pv-codes');
+    grid.textContent = '';
+    codes.forEach(function (c) { grid.appendChild(codeCard(c)); });
+    grid.hidden = !codes.length;
+    $('pv-empty').hidden = codes.length > 0;
+  }
+
+  function codeCard(c) {
+    return el('article', { class: 'code-card' }, [
+      el('div', { class: 'code-thumb' }, [el('img', { src: c.png, alt: 'رمز QR: ' + c.name, loading: 'lazy' })]),
+      el('div', { class: 'code-text' }, [
+        el('h4', { class: 'code-name', text: c.name }),
+        el('div', { class: 'pc-meta' }, [
+          el('span', { class: 'badge', text: TYPE_NAMES[c.type] || c.type }),
+          el('span', { text: formatDate(c.updatedAt) })
+        ]),
+        el('p', { class: 'code-summary', dir: 'auto', title: c.summary || '', text: c.summary || '' })
+      ]),
+      el('div', { class: 'code-actions' }, [
+        el('button', { class: 'btn', type: 'button', 'data-action': 'open', 'data-id': c.id }, [icon('i-edit', 15), 'فتح وتعديل']),
+        el('button', { class: 'btn icon-only', type: 'button', 'data-action': 'download', 'data-id': c.id, 'aria-label': 'تحميل PNG: ' + c.name, title: 'تحميل PNG' }, [icon('i-download', 16)]),
+        el('button', { class: 'btn btn-danger icon-only', type: 'button', 'data-action': 'delete', 'data-id': c.id, 'aria-label': 'حذف: ' + c.name, title: 'حذف' }, [icon('i-trash', 16)])
+      ])
+    ]);
+  }
+
+
+  /* =========================================================
+     18. PROFILES — ACTIONS
+     ========================================================= */
+
+  // ---- Create / edit a profile ----
+  function openProfileDialog(profile) {
+    $('pf-title').textContent = profile ? 'تعديل الملف' : 'ملف جديد';
+    $('pf-id').value = profile ? profile.id : '';
+    $('pf-name').value = profile ? profile.name : '';
+    setRadio('pf-kind', profile ? profile.kind : 'company');
+    $('pf-phone').value = profile ? profile.phone || '' : '';
+    $('pf-email').value = profile ? profile.email || '' : '';
+    $('pf-notes').value = profile ? profile.notes || '' : '';
+    showFormError('pf-error', '');
+    $('profile-dialog').showModal();
+    $('pf-name').focus();
+  }
+
+  function submitProfile(event) {
+    event.preventDefault();
+    var name = $('pf-name').value.trim();
+    var email = $('pf-email').value.trim();
+    if (!name) return showFormError('pf-error', 'اكتب اسم الملف.', 'pf-name');
+    if (email && !EMAIL_RE.test(email)) return showFormError('pf-error', 'الإيميل ناقص شي، تأكد منه.', 'pf-email');
+
+    var existing = profileById($('pf-id').value);
+    var now = Date.now();
+    var record = {
+      id: existing ? existing.id : newId(),
+      name: name,
+      kind: radioValue('pf-kind') || 'other',
+      phone: $('pf-phone').value.trim(),
+      email: email,
+      notes: $('pf-notes').value.trim(),
+      createdAt: existing ? existing.createdAt : now,
+      updatedAt: now
+    };
+    store.put('profiles', record).then(function () {
+      $('profile-dialog').close();
+      toast(existing ? 'حفظنا تعديلات الملف' : 'سوّينا ملف «' + name + '»');
+      refreshViews();
+      if (!existing) location.hash = '#/profiles/' + encodeURIComponent(record.id);
+    }).catch(function () {
+      showFormError('pf-error', 'ما قدرنا نحفظ. يمكن مساحة المتصفح امتلت.');
+    });
+  }
+
+  // ---- Yes / no question ----
+  function confirmAction(title, message, confirmLabel) {
+    return new Promise(function (resolve) {
+      var dlg = $('confirm-dialog');
+      $('cf-title').textContent = title;
+      $('cf-text').textContent = message;
+      $('cf-ok').textContent = confirmLabel;
+      dlg.returnValue = '';
+      dlg.addEventListener('close', function onClose() {
+        dlg.removeEventListener('close', onClose);
+        resolve(dlg.returnValue === 'ok');
+      });
+      dlg.showModal();
+      $('cf-cancel').focus();   // the safe choice is focused first
+    });
+  }
+
+  function deleteProfile(id) {
+    var p = profileById(id);
+    if (!p) return;
+    var codeIds = codesOf(id).map(function (c) { return c.id; });
+    var extra = codeIds.length ? ' ومعه ' + codesLabel(codeIds.length) : '';
+    confirmAction('تحذف الملف؟', 'بينحذف ملف «' + p.name + '»' + extra + '. ما تقدر ترجعه بعدين.', 'احذف الملف').then(function (ok) {
+      if (!ok) return;
+      store.remove('codes', codeIds)
+        .then(function () { return store.remove('profiles', [id]); })
+        .then(function () {
+          toast('انحذف ملف «' + p.name + '»');
+          location.hash = '#/profiles';
+          refreshViews();
+        })
+        .catch(function () { toast('ما قدرنا نحذف. جرّب مرة ثانية.'); });
+    });
+  }
+
+  function deleteCode(id) {
+    var c = codeById(id);
+    if (!c) return;
+    var p = profileById(c.profileId);
+    confirmAction('تحذف الكود؟', 'بينحذف «' + c.name + '»' + (p ? ' من ملف «' + p.name + '»' : '') + '. الأكواد اللي طبعتها تظل تشتغل، بس ما تقدر تعدّله من هنا بعدين.', 'احذف الكود').then(function (ok) {
+      if (!ok) return;
+      store.remove('codes', [id]).then(function () {
+        if (state.editing && state.editing.codeId === id) state.editing = null;
+        toast('انحذف الكود');
+        refreshViews();
+      }).catch(function () { toast('ما قدرنا نحذف. جرّب مرة ثانية.'); });
+    });
+  }
+
+  function downloadSavedCode(id) {
+    var c = codeById(id);
+    if (!c) return;
+    var p = profileById(c.profileId);
+    downloadBlob(dataUrlToBlob(c.png), (slugify((p ? p.name + ' ' : '') + c.name) || 'qr') + '.png');
+    toast('نزّلنا ملف PNG');
+  }
+
+  // ---- Moving between the generator and profiles ----
+  // Loads a saved code back into the generator so it can be changed and saved again.
+  function openCode(id) {
+    var c = codeById(id);
+    if (!c) return;
+    applyFields(c.fields);
+    state.design = sanitizeDesign(c.design);
+    state.logo = c.logo && typeof c.logo.dataUrl === 'string' ? { dataUrl: c.logo.dataUrl, name: c.logo.name || 'الشعار' } : null;
+    state.editing = { codeId: c.id, profileId: c.profileId };
+    state.targetProfileId = null;
+    syncDesignControls();
+    activateTab(TYPES.indexOf(c.type) !== -1 ? c.type : 'url', false);
+    updateContextBar();
+    location.hash = '#/';
+    scheduleRender(0);
+  }
+
+  // Starts a fresh code for a profile. It reuses the colors, style and logo of that
+  // profile's latest code, so a client's codes stay on-brand.
+  function newCodeFor(profileId) {
+    var latest = codesOf(profileId)[0];
+    applyFields({});
+    if (latest) {
+      state.design = sanitizeDesign(latest.design);
+      state.logo = latest.logo && typeof latest.logo.dataUrl === 'string' ? { dataUrl: latest.logo.dataUrl, name: latest.logo.name || 'الشعار' } : null;
+    } else {
+      state.logo = null;
+    }
+    state.editing = null;
+    state.targetProfileId = profileId;
+    syncDesignControls();
+    activateTab(state.type, false);
+    updateContextBar();
+    location.hash = '#/';
+    scheduleRender(0);
+    var firstField = $('panel-' + state.type).querySelector('input, textarea');
+    if (firstField) setTimeout(function () { firstField.focus(); }, 50);
+  }
+
+  // The banner above the generator: "you're editing X in profile Y" or "new code for Y".
+  function updateContextBar() {
+    var editingCode = state.editing && codeById(state.editing.codeId);
+    if (state.editing && !editingCode) state.editing = null;
+    var target = !editingCode && state.targetProfileId ? profileById(state.targetProfileId) : null;
+    if (state.targetProfileId && !target && !editingCode) state.targetProfileId = null;
+    var profile = editingCode ? profileById(editingCode.profileId) : target;
+
+    $('btn-save-label').textContent = editingCode ? 'حفظ التعديلات' : 'حفظ في ملف';
+    $('context-bar').hidden = !profile;
+    if (!profile) return;
+
+    paintAvatar($('ctx-avatar'), profile);
+    var profileLink = el('a', { href: '#/profiles/' + encodeURIComponent(profile.id), text: profile.name });
+    var txt = $('ctx-text');
+    txt.textContent = '';
+    if (editingCode) {
+      txt.append('تعدّل «', el('strong', { text: editingCode.name }), '» في ملف ', profileLink);
+      $('ctx-exit').textContent = 'إنهاء التعديل';
+    } else {
+      txt.append('تسوي كود جديد لـ ', profileLink);
+      $('ctx-exit').textContent = 'إلغاء';
+    }
+  }
+
+  // ---- Save the current code into a profile ----
+  function suggestCodeName() {
+    var cur = state.current;
+    var label = cur && cur.label && state.type !== 'text' ? cur.label : '';
+    return TYPE_NAMES[state.type] + (label ? ' — ' + label : '');
+  }
+
+  function openSaveDialog() {
+    if (!state.current) return;
+    var editingCode = state.editing && codeById(state.editing.codeId);
+    var select = $('sv-profile');
+    select.textContent = '';
+    data.profiles
+      .slice()
+      .sort(function (a, b) { return a.name.localeCompare(b.name, 'ar'); })
+      .forEach(function (p) {
+        select.appendChild(el('option', { value: p.id, text: p.name + ' (' + (PROFILE_KINDS[p.kind] || PROFILE_KINDS.other) + ')' }));
+      });
+    select.appendChild(el('option', { value: '__new', text: '+ ملف جديد…' }));
+    select.value = editingCode ? editingCode.profileId
+      : (state.targetProfileId && profileById(state.targetProfileId) ? state.targetProfileId
+      : (data.profiles.length ? select.options[0].value : '__new'));
+
+    $('sv-title').textContent = editingCode ? 'حفظ التعديلات' : 'حفظ الكود في ملف';
+    $('sv-name').value = editingCode ? editingCode.name : suggestCodeName();
+    $('sv-new-name').value = '';
+    $('sv-copy').checked = false;
+    $('sv-copy-wrap').hidden = !editingCode;
+    $('sv-new-wrap').hidden = select.value !== '__new';
+    showFormError('sv-error', '');
+    $('save-dialog').showModal();
+    $('sv-name').focus();
+    $('sv-name').select();
+  }
+
+  function submitSave(event) {
+    event.preventDefault();
+    var cur = state.current;
+    if (!cur) return;
+    var name = $('sv-name').value.trim();
+    if (!name) return showFormError('sv-error', 'اكتب اسم للكود عشان تعرفه بعدين.', 'sv-name');
+
+    var profileId = $('sv-profile').value;
+    var steps = Promise.resolve();
+    var now = Date.now();
+    if (profileId === '__new') {
+      var newName = $('sv-new-name').value.trim();
+      if (!newName) return showFormError('sv-error', 'اكتب اسم الملف الجديد.', 'sv-new-name');
+      var newProfile = { id: newId(), name: newName, kind: $('sv-new-kind').value, phone: '', email: '', notes: '', createdAt: now, updatedAt: now };
+      profileId = newProfile.id;
+      steps = store.put('profiles', newProfile);
+    }
+
+    var editingCode = state.editing && !$('sv-copy').checked ? codeById(state.editing.codeId) : null;
+    $('sv-submit').disabled = true;
+
+    blobToDataUrl(cur.blob).then(function (png) {
+      var record = {
+        id: editingCode ? editingCode.id : newId(),
+        profileId: profileId,
+        name: name,
+        type: state.type,
+        fields: collectFields(true),
+        design: copy(state.design),
+        logo: state.logo ? copy(state.logo) : null,
+        data: cur.raw,          // the exact content, used by "who owns this code?"
+        summary: cur.summary,
+        png: png,
+        createdAt: editingCode ? editingCode.createdAt : now,
+        updatedAt: now
+      };
+      return steps
+        .then(function () { return store.put('codes', record); })
+        .then(function () {
+          var owner = profileById(profileId);
+          if (owner) return store.put('profiles', Object.assign({}, owner, { updatedAt: now }));
+        })
+        .then(function () { return record; });
+    }).then(function (record) {
+      state.editing = { codeId: record.id, profileId: record.profileId };
+      state.targetProfileId = null;
+      $('save-dialog').close();
+      var owner = profileById(record.profileId);
+      toast('انحفظ في ملف «' + (owner ? owner.name : '') + '»');
+      refreshViews();
+    }).catch(function () {
+      showFormError('sv-error', 'ما قدرنا نحفظ. يمكن مساحة المتصفح امتلت — جرّب تحذف أكواد قديمة.');
+    }).then(function () {
+      $('sv-submit').disabled = false;
+    });
+  }
+
+  // ---- Who owns this code? ----
+  // Reads a QR code from a photo or screenshot, then looks for a saved code with the same content.
+  function identifyFromFile(file) {
+    var out = $('identify-result');
+    out.textContent = '';
+    if (!file) return;
+    if (typeof window.jsQR !== 'function') {
+      out.appendChild(el('p', { class: 'notice is-error', text: 'قارئ الأكواد ما تحمّل. تأكد من الإنترنت وحدّث الصفحة.' }));
+      return;
+    }
+    out.appendChild(el('p', { class: 'field-msg', text: 'نقرأ الصورة…' }));
+
+    readFileAsDataUrl(file).then(loadImage).then(function (img) {
+      var found = null;
+      // Try a few sizes: big photos read better scaled down, small screenshots at full size.
+      [1600, 900, 500].some(function (max) {
+        var scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+        var w = Math.max(1, Math.round(img.naturalWidth * scale));
+        var h = Math.max(1, Math.round(img.naturalHeight * scale));
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, w, h);
+        found = window.jsQR(ctx.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: 'attemptBoth' });
+        return !!found;
+      });
+      out.textContent = '';
+      if (!found) {
+        out.appendChild(el('p', { class: 'notice is-warn', text: 'ما لقينا كود QR في الصورة. جرّب صورة أوضح وأقرب للكود.' }));
+        return;
+      }
+      var text = new TextDecoder('utf-8').decode(new Uint8Array(found.binaryData));
+      var matches = data.codes.filter(function (c) { return c.data === text; });
+      if (!matches.length) {
+        out.appendChild(el('p', { class: 'notice is-info', text: 'قرينا الكود، بس مو محفوظ في أي ملف عندك. هذا اللي فيه:' }));
+        out.appendChild(el('div', { class: 'decoded', dir: 'auto', text: text }));
+        return;
+      }
+      out.appendChild(el('p', { class: 'notice is-ok', text: matches.length === 1 ? 'لقيناه! الكود هذا يرجع لـ:' : 'لقينا الكود في أكثر من مكان:' }));
+      matches.forEach(function (c) {
+        var p = profileById(c.profileId);
+        if (!p) return;
+        out.appendChild(el('div', { class: 'identify-hit' }, [
+          el('img', { src: c.png, alt: '' }),
+          el('span', { class: 'pc-body' }, [
+            el('span', { class: 'pc-name', text: p.name }),
+            el('span', { class: 'pc-meta', text: c.name + ' · ' + (TYPE_NAMES[c.type] || '') })
+          ]),
+          el('a', { class: 'btn', href: '#/profiles/' + encodeURIComponent(p.id), 'data-close': '' }, ['افتح الملف'])
+        ]));
+      });
+    }).catch(function () {
+      out.textContent = '';
+      out.appendChild(el('p', { class: 'notice is-error', text: 'ما قدرنا نفتح الصورة. جرّب صورة ثانية.' }));
+    });
+  }
+
+  // ---- Backup and restore ----
+  function exportBackup() {
+    var payload = { app: 'quietzone', version: 1, exportedAt: new Date().toISOString(), profiles: data.profiles, codes: data.codes };
+    var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    downloadBlob(blob, 'quietzone-backup-' + new Date().toISOString().slice(0, 10) + '.json');
+    toast('نزّلنا النسخة الاحتياطية (' + codesLabel(data.codes.length) + ')');
+  }
+
+  function importBackup(file) {
+    if (!file) return;
+    file.text().then(function (txt) {
+      var parsed = JSON.parse(txt);
+      if (!parsed || parsed.app !== 'quietzone' || !Array.isArray(parsed.profiles) || !Array.isArray(parsed.codes)) throw new Error('format');
+      // Only accept records that look right, so a broken file can't break the app.
+      var profiles = parsed.profiles.filter(function (p) {
+        return p && typeof p.id === 'string' && typeof p.name === 'string' && p.name.trim();
+      });
+      var known = {};
+      profiles.forEach(function (p) { known[p.id] = true; });
+      data.profiles.forEach(function (p) { known[p.id] = true; });
+      var codes = parsed.codes.filter(function (c) {
+        return c && typeof c.id === 'string' && known[c.profileId] && TYPES.indexOf(c.type) !== -1 &&
+          typeof c.name === 'string' && typeof c.png === 'string' && c.png.indexOf('data:image/png') === 0;
+      });
+      var now = Date.now();
+      var chain = Promise.resolve();
+      profiles.forEach(function (p) {
+        var clean = { id: p.id, name: String(p.name).slice(0, 80), kind: PROFILE_KINDS[p.kind] ? p.kind : 'other',
+          phone: String(p.phone || ''), email: String(p.email || ''), notes: String(p.notes || ''),
+          createdAt: Number(p.createdAt) || now, updatedAt: Number(p.updatedAt) || now };
+        chain = chain.then(function () { return store.put('profiles', clean); });
+      });
+      codes.forEach(function (c) {
+        chain = chain.then(function () { return store.put('codes', c); });
+      });
+      return chain.then(function () {
+        toast('استرجعنا ' + profiles.length + ' ملف و' + codesLabel(codes.length));
+        refreshViews();
+      });
+    }).catch(function () {
+      toast('الملف هذا مو نسخة احتياطية صالحة.');
+    });
+  }
+
+  function bindProfileEvents() {
+    window.addEventListener('hashchange', function () { route(true); });
+
+    $('btn-new-profile').addEventListener('click', function () { openProfileDialog(null); });
+    $('btn-new-profile-empty').addEventListener('click', function () { openProfileDialog(null); });
+    $('profile-form').addEventListener('submit', submitProfile);
+    $('profile-search').addEventListener('input', renderProfilesView);
+
+    $('btn-profile-edit').addEventListener('click', function () { openProfileDialog(profileById(state.viewProfileId)); });
+    $('btn-profile-delete').addEventListener('click', function () { deleteProfile(state.viewProfileId); });
+    $('btn-profile-newcode').addEventListener('click', function () { newCodeFor(state.viewProfileId); });
+    $('btn-profile-newcode-empty').addEventListener('click', function () { newCodeFor(state.viewProfileId); });
+
+    // One listener handles the buttons on every code card.
+    $('pv-codes').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      var id = btn.getAttribute('data-id');
+      var action = btn.getAttribute('data-action');
+      if (action === 'open') openCode(id);
+      else if (action === 'download') downloadSavedCode(id);
+      else if (action === 'delete') deleteCode(id);
+    });
+
+    // Saving from the generator
+    $('btn-save').addEventListener('click', openSaveDialog);
+    $('save-form').addEventListener('submit', submitSave);
+    $('sv-profile').addEventListener('change', function () {
+      var isNew = this.value === '__new';
+      $('sv-new-wrap').hidden = !isNew;
+      if (isNew) $('sv-new-name').focus();
+    });
+    $('ctx-exit').addEventListener('click', function () {
+      state.editing = null;
+      state.targetProfileId = null;
+      updateContextBar();
+    });
+
+    // Who owns this code?
+    $('btn-identify').addEventListener('click', function () {
+      $('identify-result').textContent = '';
+      $('identify-input').value = '';
+      $('identify-dialog').showModal();
+    });
+    $('identify-input').addEventListener('change', function () { identifyFromFile(this.files && this.files[0]); });
+    var idDrop = $('identify-drop');
+    ['dragenter', 'dragover'].forEach(function (n) { idDrop.addEventListener(n, function (e) { e.preventDefault(); idDrop.classList.add('is-dragging'); }); });
+    ['dragleave', 'drop'].forEach(function (n) { idDrop.addEventListener(n, function (e) { e.preventDefault(); idDrop.classList.remove('is-dragging'); }); });
+    idDrop.addEventListener('drop', function (e) { identifyFromFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]); });
+
+    // Backup
+    $('btn-backup').addEventListener('click', exportBackup);
+    $('btn-restore').addEventListener('click', function () { $('restore-input').click(); });
+    $('restore-input').addEventListener('change', function () { importBackup(this.files && this.files[0]); this.value = ''; });
+
+    // All dialogs: buttons/links marked data-close close them, and so does clicking the dark backdrop.
+    document.querySelectorAll('dialog').forEach(function (dlg) {
+      dlg.addEventListener('click', function (e) {
+        if (e.target === dlg || e.target.closest('[data-close]')) dlg.close();
+      });
+    });
+  }
+
+
+  /* =========================================================
+     19. START-UP
+     ========================================================= */
+
+  function init() {
+    bindProfileEvents();
+    // Profiles load in the background; the page appears straight away.
+    store.load().then(function () {
+      dataReady = true;
+      refreshViews();
+      route(false);
+    });
+
+    // jsQR is optional: without it the app still works, it just skips the scan check.
+    if (typeof window.QRCodeStyling !== 'function' || typeof window.qrcode !== 'function') {
+      showStage('error', 'ما قدرنا نحمّل محرك الـ QR', 'تأكد من اتصالك بالإنترنت وحدّث الصفحة. المولّد يحتاج يحمّل مكتبة الرسم مرة وحدة.');
+      return;
+    }
+    restoreSettings();
+    syncDesignControls();
+    activateTab(state.type, false);
+    bindEvents();
+    render();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
